@@ -27,10 +27,7 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="ja">
-			<head>
-				<GoogleAnalytics gaId="G-CCXN6BJ87D" />
-				<GoogleTagManager gtmId="GTM-WJK9V7HH" />
-			</head>
+			<GoogleTagManager gtmId="GTM-WJK9V7HH" />
 			<body
 				className={`${ZenKakuGothicNew.className} flex min-h-screen flex-col`}
 			>
@@ -38,6 +35,7 @@ export default function RootLayout({
 				{children}
 				<Footer />
 			</body>
+			<GoogleAnalytics gaId="G-CCXN6BJ87D" />
 		</html>
 	);
 }
