@@ -4,11 +4,17 @@ import { Metadata } from "next";
 import { getBasicMetadata } from "@/app/metadata";
 
 // metadataを動的に適用
-export async function generateMetadata({
-  params: { postId },
-}: {
-  params: { postId: string };
-}): Promise<Metadata> {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ postId: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
+
+  const {
+    postId
+  } = params;
+
   // fetch data
   const post = await getDetail(postId);
   const reg = /<("[^"]*"|'[^']*'|[^'">])*>/g;
@@ -36,11 +42,17 @@ export async function generateStaticParams() {
   return paths;
 }
 
-export default async function Page({
-  params: { postId },
-}: {
-  params: { postId: string };
-}) {
+export default async function Page(
+  props: {
+    params: Promise<{ postId: string }>;
+  }
+) {
+  const params = await props.params;
+
+  const {
+    postId
+  } = params;
+
   const post = await getDetail(postId);
   return <Post post={post} />;
 }

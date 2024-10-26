@@ -3,11 +3,17 @@ import { Tag } from "@/types/Tag";
 import { Metadata } from "next";
 import { getBasicMetadata } from "@/app/metadata";
 
-export function generateMetadata({
-  params: { tagName },
-}: {
-  params: { tagName: string };
-}): Metadata {
+export async function generateMetadata(
+  props: {
+    params: Promise<{ tagName: string }>;
+  }
+): Promise<Metadata> {
+  const params = await props.params;
+
+  const {
+    tagName
+  } = params;
+
   const description = `${tagName}タグのついたページ一覧`;
 
   return getBasicMetadata({
@@ -18,10 +24,16 @@ export function generateMetadata({
 }
 
 type Props = {
-  params: { tagName: Tag };
+  params: Promise<{ tagName: Tag }>;
 };
 
-export default async function Page({ params: { tagName } }: Props) {
+export default async function Page(props: Props) {
+  const params = await props.params;
+
+  const {
+    tagName
+  } = params;
+
   return (
     <main>
       <TagPage tagName={tagName} />
