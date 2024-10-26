@@ -10,8 +10,8 @@ const ZenKakuGothicNew = Zen_Kaku_Gothic_New({
 });
 
 const url = process.env.VERCEL_URL
-  ? `https://ydog-tech-blog.vercel.app/`
-  : "http://localhost:3000";
+	? "https://www.blog.ydog.jp/"
+	: "http://localhost:3000";
 
 export const metadata = {
   metadataBase: new URL(url),
