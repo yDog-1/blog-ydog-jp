@@ -4,7 +4,7 @@ import { Header } from "@/components/layouts/Header";
 import { Footer } from "@/components/layouts/Footer";
 import { getBasicMetadata } from "./metadata";
 import Script from "next/script";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 
 const ZenKakuGothicNew = Zen_Kaku_Gothic_New({
 	weight: "400",
@@ -29,6 +29,7 @@ export default function RootLayout({
 		<html lang="ja">
 			<head>
 				<GoogleAnalytics gaId="G-CCXN6BJ87D" />
+				<GoogleTagManager gtmId="GTM-WJK9V7HH" />
 			</head>
 			<body
 				className={`${ZenKakuGothicNew.className} flex min-h-screen flex-col`}
