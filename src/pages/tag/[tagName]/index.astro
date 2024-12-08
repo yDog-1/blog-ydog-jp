@@ -1,0 +1,15 @@
+---
+import TagPage from "@/features/components/TagPageList/TagPageList";
+import Layout from "@/layouts/Layout.astro";
+import type { Tag } from "@/types/Tag";
+
+export const prerender = false;
+
+const { tagName } = Astro.params;
+---
+
+<Layout>
+  <main>
+    <TagPage tagName={(tagName as Tag) || ""} />
+  </main>
+</Layout>
