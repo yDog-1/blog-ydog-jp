@@ -7,7 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "fmtlint": "eslint --cache --fix src/ && prettier --write src/"
+    "fmtlint": "bunx biome check --write ."
   },
   "dependencies": {
     "@astrojs/react": "^4.0.0",
