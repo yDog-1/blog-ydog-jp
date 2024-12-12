@@ -1,0 +1,40 @@
+---
+import StyleTag from "@/components/elements/tag/StyleTag";
+import TopPage from "@/components/layouts/TopPage.astro";
+import type { Tag } from "@/types/Tag";
+
+const fixTag = (tagName: string) => {
+  if (tagName.includes("-")) {
+    return tagName.replace("-", ".");
+  }
+  return decodeURI(tagName);
+};
+
+interface Props {
+  tagName: Tag;
+}
+
+const { tagName } = Astro.params;
+const fixedTagName = (() => {
+  if (tagName === undefined) {
+    return "";
+  }
+  return fixTag(decodeURI(tagName).replace(".", "-"));
+})();
+---
+
+<>
+  <div>
+    <div class="mx-3 flex flex-col items-center md:flex-row">
+      <div
+        class="my-8 flex w-fit drop-shadow-xl *:rounded-md *:px-6 *:pb-3 md:ml-5"
+      >
+        <StyleTag tagName={fixedTagName}>
+          <h1 class="text-5xl">{fixedTagName}</h1>
+        </StyleTag>
+      </div>
+      <p class="mb-3 md:mb-0 md:ml-1 md:mt-8">ページ一覧</p>
+    </div>
+  </div>
+  <TopPage queries={{ filters: `tags[contains]${fixedTagName}` }} />
+</>
