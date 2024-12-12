@@ -1,6 +1,5 @@
 import type { Content } from "@/types/Content";
 import type { MicroCMSQueries } from "microcms-js-sdk";
-import React from "react";
 import PostList from "./PostList";
 
 type Props = {
