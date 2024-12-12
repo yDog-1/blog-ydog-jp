@@ -1,4 +1,5 @@
 ---
+import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
 ---
 
@@ -10,11 +11,12 @@ import Layout from "@/layouts/Layout.astro";
         <p class="text-xl">おっと、このページは見つかりませんでした！</p>
         <div class="flex mt-6 justify-center">
           <a class="flex items-end hover:underline" href="/">
-            <img
-              src="/images/yDog.png"
+            <Image
+              src="/images/yDog.webp"
               alt="yDogのアイコン"
               title="yDog"
-              width="36rem"
+              width={120}
+              height={120}
             />
             <p class="text-blue-500">ホーム画面に戻る</p>
           </a>
