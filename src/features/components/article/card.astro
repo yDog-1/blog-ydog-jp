@@ -13,7 +13,7 @@ const { title, description, publishedAt } = article;
 const formatedDate = formatDateJapanese(publishedAt);
 ---
 
-<div class="">
+<div>
   <a
     href={`/post/${title}`}
     class="group flex flex-1 flex-col rounded-lg border-b-4 bg-slate-100 py-3 gap-3 duration-100 hover:border-none hover:translate-y-[4px] active:bg-slate-200"
@@ -22,7 +22,7 @@ const formatedDate = formatDateJapanese(publishedAt);
       {title}
     </h2>
     <div class="flex justify-between px-5 flex-col">
-      <p class="">{description}</p>
+      <p>{description}</p>
       <div class="flex">
         <p class="text-sm text-end flex-1 py-1 mr-4">
           {formatedDate}
