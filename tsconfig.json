@@ -1,13 +1,20 @@
 {
-  "extends": "astro/tsconfigs/strict",
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "target": "ESNext",
+  "extends": "astro/tsconfigs/base",
   "include": ["src/**/*"],
   "exclude": ["dist"],
   "compilerOptions": {
+    "moduleResolution": "bundler",
+    "module": "ESNext",
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
     },
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "react",
+    "skipLibCheck": true,
+    "strict": true,
+    "verbatimModuleSyntax": false
   }
 }
