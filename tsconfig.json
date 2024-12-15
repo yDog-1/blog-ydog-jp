@@ -2,14 +2,14 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "target": "ESNext",
   "extends": "astro/tsconfigs/base",
-  "include": ["src/**/*"],
-  "exclude": ["dist"],
+  "include": [ "src/**/*" ],
+  "exclude": [ "dist" ],
   "compilerOptions": {
     "moduleResolution": "bundler",
     "module": "ESNext",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [ "src/*" ]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react",
