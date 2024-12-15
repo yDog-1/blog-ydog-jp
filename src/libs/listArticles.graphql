@@ -1,0 +1,18 @@
+query listArticles($owner: String!, $name: String!) {
+  repository(owner: $owner, name: $name) {
+    object(expression: "HEAD:blog") {
+      __typename
+      ... on Tree {
+        entries {
+          name
+          object {
+            __typename
+            ... on Blob {
+              text
+            }
+          }
+        }
+      }
+    }
+  }
+}
