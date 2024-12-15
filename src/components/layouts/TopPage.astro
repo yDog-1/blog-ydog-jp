@@ -1,10 +1,7 @@
 ---
-import { getArticles } from "@/libs/article";
 import ArticleList from "@/features/components/article/articleList.astro";
-
-const articles = await getArticles();
 ---
 
 <div class="mx-auto container">
-  <ArticleList articles={articles} />
+  <ArticleList />
 </div>

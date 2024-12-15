@@ -2,7 +2,7 @@ import StyleTag from "@/components/elements/tag/StyleTag";
 import type { Tag } from "@/types/Tag";
 
 type Props = {
-  tag: Tag;
+  tag: string;
 };
 
 export default function TagIcon({ tag }: Props) {

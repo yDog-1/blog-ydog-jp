@@ -1,12 +1,7 @@
 ---
 import type { Article } from "@/types/Article";
 import Card from "./card.astro";
-
-interface Props {
-  articles: (Article | undefined)[] | undefined;
-}
-
-const { articles } = Astro.props;
+import { articles } from "@/libs/article";
 
 if (!articles) {
   throw new Error("articles is not defined");

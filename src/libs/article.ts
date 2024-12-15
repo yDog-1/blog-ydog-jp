@@ -6,7 +6,9 @@ import type {
 } from "@/types/Article";
 import matter from "gray-matter";
 
-export const getArticles = async () => {
+export const articles = await getArticles();
+
+async function getArticles() {
   const sdk = NewGitHubSdk();
   const q = await sdk.listArticles(articleVariables);
 
@@ -21,7 +23,7 @@ export const getArticles = async () => {
 
     return parseToArticle({ name: c.name, text: c.object.text });
   });
-};
+}
 
 function parseToArticle(input: ArticleInput): Article | undefined {
   const { content, data } = matter(input.text);
@@ -50,7 +52,10 @@ function isValidArticleData(data: unknown): data is ArticleFrontmatter {
   if (typeof data !== "object" || data === null) {
     return false;
   }
-  if (!("published_at" in data && "tags" in data && "description" in data)) {
+  if (
+    !("published_at" in data && "tags" in data && "description" in data) ||
+    data.published_at === null
+  ) {
     return false;
   }
   return (

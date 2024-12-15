@@ -1,7 +1,7 @@
 import TagIcon from "@/features/components/Post/tagIcon/TagIcon";
 import type { Tag } from "@/types/Tag";
 
-type Props = { tags: Tag[] };
+type Props = { tags: string[] };
 
 export default function TagIcons({ tags }: Props) {
   return (
