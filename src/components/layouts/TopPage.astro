@@ -1,26 +1,10 @@
 ---
 import { getArticles } from "@/libs/article";
-import { formatDateJapanese } from "@/libs/date";
+import ArticleList from "@/features/components/article/articleList.astro";
 
 const articles = await getArticles();
 ---
 
-<div>
-  {
-    articles ? (
-      <div>
-        {articles.map((article) => (
-          article && (
-            <div>
-              <h1>{article.title}</h1>
-              <p>{article.description}</p>
-              <p>{formatDateJapanese(article.published_at)}</p>
-            </div>
-          )
-        ))}
-      </div>
-    ) : (
-      <></>
-    )
-  }
+<div class="mx-auto container">
+  <ArticleList articles={articles} />
 </div>

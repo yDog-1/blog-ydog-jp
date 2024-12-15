@@ -1,0 +1,29 @@
+---
+import type { Article } from "@/types/Article";
+import Card from "./card.astro";
+
+interface Props {
+  articles: (Article | undefined)[] | undefined;
+}
+
+const { articles } = Astro.props;
+
+if (!articles) {
+  throw new Error("articles is not defined");
+}
+---
+
+<ul
+  class="flex flex-col mx-2 my-3 gap-2 md:grid md:grid-cols-2 md:mx-0 lg:grid-cols-3"
+>
+  {
+    articles.map(
+      (article) =>
+        article && (
+          <li>
+            <Card article={article} />
+          </li>
+        ),
+    )
+  }
+</ul>
