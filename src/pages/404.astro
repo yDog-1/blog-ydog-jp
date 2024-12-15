@@ -4,13 +4,13 @@ import Layout from "@/layouts/Layout.astro";
 ---
 
 <Layout>
-  <main class="grid items-center">
+  <main class="grid items-center flex-1">
     <div class="flex flex-col items-center">
       <h2 class="mb-6 text-5xl">404 Not Found</h2>
       <div>
         <p class="text-xl">おっと、このページは見つかりませんでした！</p>
-        <div class="flex mt-6 justify-center">
-          <a class="flex items-end hover:underline" href="/">
+        <div class="flex justify-center mt-6">
+          <a href="/">
             <Image
               src="/images/yDog.webp"
               alt="yDogのアイコン"
@@ -18,8 +18,14 @@ import Layout from "@/layouts/Layout.astro";
               width={120}
               height={120}
             />
-            <p class="text-blue-500">ホーム画面に戻る</p>
           </a>
+          <div class="content-end">
+            <a href="/">
+              <p class="text-blue-500 decoration-blue-500 hover:underline">
+                ホーム画面に戻る
+              </p>
+            </a>
+          </div>
         </div>
       </div>
     </div>
