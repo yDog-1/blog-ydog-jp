@@ -39,7 +39,7 @@ function parseToArticle(input: ArticleInput): Article | undefined {
 
   return {
     title,
-    published_at,
+    publishedAt: published_at,
     tags: data.tags,
     description: data.description,
     body: content,
@@ -47,11 +47,18 @@ function parseToArticle(input: ArticleInput): Article | undefined {
 }
 
 function isValidArticleData(data: unknown): data is ArticleFrontmatter {
-  const d = data as ArticleFrontmatter;
+  if (typeof data !== "object" || data === null) {
+    return false;
+  }
+  if (!("published_at" in data && "tags" in data && "description" in data)) {
+    return false;
+  }
   return (
-    typeof d.published_at === "string" &&
-    Array.isArray(d.tags) &&
-    typeof d.description === "string"
+    typeof (
+      data.published_at === "string" || data.published_at instanceof Date
+    ) &&
+    Array.isArray(data.tags) &&
+    typeof data.description === "string"
   );
 }
 

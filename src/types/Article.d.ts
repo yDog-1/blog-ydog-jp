@@ -1,6 +1,6 @@
 export type Article = {
   title: string;
-  published_at: Date;
+  publishedAt: Date;
   tags: string[];
   description: string;
   body: string;
