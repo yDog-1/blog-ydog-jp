@@ -1,6 +1,7 @@
 ---
 import Footer from "@/components/layouts/Footer.astro";
 import Header from "@/components/layouts/Header.astro";
+import { Provider } from "@/components/ui/provider";
 ---
 
 <!doctype html>
@@ -12,9 +13,11 @@ import Header from "@/components/layouts/Header.astro";
     <meta name="generator" content={Astro.generator} />
     <title>Astro Basics</title>
   </head>
-  <body class="flex min-h-screen flex-col">
-    <Header />
-    <slot />
-    <Footer />
-  </body>
+  <Provider>
+    <body class="flex min-h-screen flex-col">
+      <Header />
+      <slot />
+      <Footer />
+    </body>
+  </Provider>
 </html>
