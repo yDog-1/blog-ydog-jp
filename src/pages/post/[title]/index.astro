@@ -3,9 +3,7 @@ import TagIcons from "@/features/components/Post/tagIcon/TagIcons";
 import Layout from "@/layouts/Layout.astro";
 import { articles } from "@/libs/article";
 import { formatDateJapanese } from "@/libs/date";
-import { Marked } from "marked";
-import { markedHighlight } from "marked-highlight";
-import hljs from "highlight.js";
+import { marked } from "@/libs/marked";
 import "highlight.js/styles/github.css";
 
 export function getStaticPaths() {
@@ -28,34 +26,29 @@ if (article === undefined) {
   throw new Error("articles is undefined");
 }
 
-const marked = new Marked(
-  markedHighlight({
-    emptyLangClass: "hljs",
-    langPrefix: "hljs language-",
-    highlight(code, lang, info) {
-      const language = hljs.getLanguage(lang) ? lang : "plaintext";
-      return hljs.highlight(code, { language }).value;
-    },
-  }),
-);
-
 const content = marked.parse(article.body);
 ---
 
 <Layout>
-  <div class="bg-slate-200 py-16">
-    <div class="container mx-auto">
-      <p class="text-slate-500">{formatDateJapanese(article.publishedAt)}</p>
-      <h1 class="text-4xl mt-2 font-bold">{article.title}</h1>
-      <div class="mt-10 mb-8">
-        <TagIcons tags={article.tags} />
+  <main class="flex-1">
+    <article>
+      <div class="bg-slate-200 py-16">
+        <div class="container mx-auto px-2">
+          <p class="text-slate-500">
+            {formatDateJapanese(article.publishedAt)}
+          </p>
+          <h1 class="text-4xl mt-2 font-bold">{article.title}</h1>
+          <div class="mt-10 mb-8">
+            <TagIcons tags={article.tags} />
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-  <main class="container mx-auto flex-1 mt-10">
-    <article
-      set:html={content}
-      class="mx-2 max-w-none md:mx-0 prose prose-headings:border-b-2 prose-headings:border-red-400 prose-headings:pb-3 prose-a:text-blue-500 prose-a:no-underline hover:prose-a:underline prose-blockquote:border-red-400 prose-blockquote:bg-red-50 prose-blockquote:rounded-r-md prose-li:list"
-    />
+      <section class="container mx-auto px-2 mt-10">
+        <div
+          set:html={content}
+          class="mx-2 max-w-none md:mx-0 prose prose-headings:border-b-2 prose-headings:border-red-400 prose-h1:pb-1 prose-a:text-blue-500 prose-a:no-underline hover:prose-a:underline prose-blockquote:border-red-400 prose-blockquote:bg-red-50 prose-blockquote:rounded-r-md prose-li:list prose-table:w-fit prose-table:min-w-xl"
+        />
+      </section>
+    </article>
   </main>
 </Layout>
