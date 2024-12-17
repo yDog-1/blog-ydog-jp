@@ -27,21 +27,23 @@ if (article === undefined) {
 }
 
 const content = marked.parse(article.body);
+
+const [formatedPublishedAt] = article.publishedAt.toISOString().split("T");
 ---
 
 <Layout>
   <main class="flex-1">
     <article>
       <div class="bg-slate-200 pt-16 pb-10">
-        <div class="container mx-auto px-2">
-          <p class="text-slate-500">
+        <header class="container mx-auto px-2">
+          <time datetime={formatedPublishedAt} class="text-slate-500">
             {formatDateJapanese(article.publishedAt)}
-          </p>
+          </time>
           <h1 class="text-4xl mt-2 font-bold">{article.title}</h1>
           <div class="mt-10">
             <TagIcons tags={article.tags} />
           </div>
-        </div>
+        </header>
       </div>
       <section class="container mx-auto px-2 mt-10">
         <div
