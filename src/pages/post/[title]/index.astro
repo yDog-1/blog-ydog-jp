@@ -46,11 +46,156 @@ const [formatedPublishedAt] = article.publishedAt.toISOString().split("T");
         </header>
       </div>
       <section class="container mx-auto px-2 mt-10">
-        <div
-          set:html={content}
-          class="mx-2 max-w-none md:mx-0 prose prose-headings:border-b-2 prose-headings:border-red-400 prose-h1:pb-1 prose-a:text-blue-500 prose-a:no-underline hover:prose-a:underline prose-blockquote:border-red-400 prose-blockquote:bg-red-50 prose-blockquote:rounded-r-md prose-li:list prose-table:w-fit prose-table:min-w-xl"
-        />
+        <div set:html={content} class="mx-2 max-w-none md:mx-0 article" />
       </section>
     </article>
   </main>
 </Layout>
+<style>
+  .article {
+    > h1,
+    > h2,
+    > h3,
+    > h4,
+    > h5,
+    > h6,
+    > th {
+      @apply border-red-400;
+    }
+    > h1 {
+      @apply pb-1 font-bold text-4xl my-8 border-b-2;
+    }
+    > h2 {
+      @apply pb-0.5 font-bold text-3xl my-8 border-b-2;
+    }
+    > h3 {
+      @apply font-bold text-2xl my-6 border-b-2;
+    }
+    > h4 {
+      @apply font-medium text-xl my-6 border-b-2;
+    }
+    > h5 {
+      @apply font-medium text-lg my-6 border-b-2;
+    }
+    > h6 {
+      @apply font-medium my-6 border-b-2;
+    }
+    > p {
+      @apply my-4;
+    }
+    > a {
+      @apply text-blue-500 hover:underline;
+    }
+    > blockquote {
+      @apply border-l-4 p-2 border-red-500 bg-red-50 rounded-r-md;
+    }
+    /* ベースとなるリスト */
+    > ul,
+    > ol {
+      @apply my-8;
+      /* 1つ目のliはインデントしない */
+      > li {
+        @apply ml-0;
+      }
+      /* Todoリスト用エスケープ処理 */
+      li:has(> input[type="checkbox"]) {
+        @apply list-none ml-0;
+        &::before,
+        &::after {
+          content: none;
+        }
+      }
+      /*インデント  */
+      li {
+        @apply ml-8;
+      }
+      /* liのベースレイアウト */
+      li {
+        @apply my-4 relative font-bold ml-6 pl-2;
+        &::before {
+          content: "";
+          height: calc(1.5rem + 2px);
+          @apply absolute -top-[1px] -left-6 w-6 rounded rounded-ee-none;
+        }
+        &::after {
+          content: "";
+          width: calc(100% - 1.5rem);
+          @apply absolute top-6 left-0 h-[1px];
+        }
+      }
+    }
+    /* ol li 用のレイアウト */
+    ol {
+      counter-reset: item;
+      & > li {
+        &::before {
+          content: counter(item);
+          counter-increment: item;
+          @apply text-center text-white;
+        }
+      }
+    }
+    /* li 用の色付け */
+    > ul li,
+    > ol li {
+      &:nth-child(6n + 1) {
+        &::before,
+        &::after {
+          @apply bg-red-500;
+        }
+      }
+      &:nth-child(6n + 2) {
+        &::before,
+        &::after {
+          @apply bg-orange-500;
+        }
+      }
+      &:nth-child(6n + 3) {
+        &::before,
+        &::after {
+          @apply bg-yellow-500;
+        }
+      }
+      &:nth-child(6n + 4) {
+        &::before,
+        &::after {
+          @apply bg-green-500;
+        }
+      }
+      &:nth-child(6n + 5) {
+        &::before,
+        &::after {
+          @apply bg-cyan-500;
+        }
+      }
+      &:nth-child(6n + 6) {
+        &::before,
+        &::after {
+          @apply bg-indigo-500;
+        }
+      }
+    }
+
+    > table {
+      @apply w-fit;
+      > thead {
+        @apply border-red-500 border-b-2;
+      }
+      > tbody {
+        > tr {
+          @apply border-gray-200 border-b-[1px];
+        }
+      }
+      th,
+      td {
+        @apply py-1 px-2;
+      }
+    }
+    > p > code {
+      @apply bg-gray-200 rounded-md px-1.5 font-mono;
+    }
+    > p > img {
+      @apply max-h-72;
+    }
+  }
+</style>
