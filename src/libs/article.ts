@@ -16,12 +16,16 @@ async function getArticles() {
     return;
   }
 
-  return q.repository.object.entries?.map((c) => {
+  const articles = q.repository.object.entries?.map((c) => {
     if (!isBlob(c.object) || !c.object.text) {
       return;
     }
 
     return parseToArticle({ name: c.name, text: c.object.text });
+  });
+  return articles?.sort((a, b) => {
+    if (!a || !b) return 0;
+    return b.publishedAt.getTime() - a.publishedAt.getTime();
   });
 }
 
