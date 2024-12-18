@@ -22,7 +22,7 @@ marked.use({
         const { text, lang } = token;
         const [languageName, filename] = lang.split(":");
         const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-        return `<div>${filename ? `<div class="filename">${filename}</div>` : ""}<pre><code class="${languageName}"><br>${text}</code></pre></div>`;
+        return `<div>${filename ? `<div class="filename">${filename}</div>` : ""}<pre><code class="${languageName}">${text}</code></pre></div>`;
       },
     },
   ],
