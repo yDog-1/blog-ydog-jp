@@ -197,5 +197,45 @@ const [formatedPublishedAt] = article.publishedAt.toISOString().split("T");
     > p > img {
       @apply max-h-72;
     }
+    /* コードブロック */
+    .filename {
+      @apply font-mono inline-block bg-indigo-700 px-3 pt-1 mt-6 rounded-md rounded-b-none text-white;
+    }
+    > div > pre {
+      @apply bg-gray-800 rounded-3xl rounded-b-sm rounded-ss-none p-6 mb-6 overflow-x-auto;
+      &::-webkit-scrollbar {
+        /* @apply; b */
+        @apply bg-indigo-200 h-2;
+      }
+      &::-webkit-scrollbar-thumb {
+        @apply bg-indigo-500;
+      }
+      code {
+        @apply font-mono text-gray-200;
+        .hljs-string {
+          @apply text-green-400;
+        }
+        .hljs-subst {
+          @apply text-green-400;
+        }
+        .hljs-keyword {
+          @apply text-pink-500;
+        }
+        .hljs-title {
+          &.class_ {
+            @apply text-purple-400;
+          }
+          &.function_ {
+            @apply text-blue-400;
+          }
+        }
+        .hljs-attr {
+          @apply text-yellow-300;
+        }
+        .hljs-regexp {
+          @apply text-violet-500;
+        }
+      }
+    }
   }
 </style>
