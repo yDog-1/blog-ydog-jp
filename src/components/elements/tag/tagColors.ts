@@ -1,11 +1,9 @@
-import type { Tag } from "@/types/Tag";
-
 export class TagColor {
   readonly isBlackText: boolean;
   readonly hsl: string;
 
   constructor(
-    readonly tag: Tag,
+    readonly tag: string,
     private color: [Hue: number, Saturation: number, Lightness: number],
   ) {
     this.isBlackText = this.isBlack();

@@ -1,4 +1,3 @@
-import type { Tag } from "@/types/Tag";
 import { TagColor, tagColors } from "./tagColors";
 
 const blackText = "#0f172a";
@@ -13,7 +12,7 @@ export default function StyleTag({
 }) {
   const tag =
     tagColors.find((tag) => tag.tag === tagName) ??
-    new TagColor(tagName as Tag, [0, 0, 50]);
+    new TagColor(tagName, [0, 0, 50]);
 
   const textColor = tag.isBlackText ? blackText : whiteText;
   return (
