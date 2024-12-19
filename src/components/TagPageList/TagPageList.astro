@@ -1,17 +1,10 @@
 ---
 import StyleTag from "@/components/elements/tag/StyleTag";
 import TopPage from "@/components/layouts/TopPage.astro";
-import type { Tag } from "@/types/Tag";
-
-const fixTag = (tagName: string) => {
-  if (tagName.includes("-")) {
-    return tagName.replace("-", ".");
-  }
-  return decodeURI(tagName);
-};
+import { decodeTag } from "@/libs/tag";
 
 interface Props {
-  tagName: Tag;
+  tagName?: string;
 }
 
 const { tagName } = Astro.params;
@@ -19,7 +12,7 @@ const fixedTagName = (() => {
   if (tagName === undefined) {
     return "";
   }
-  return fixTag(decodeURI(tagName).replace(".", "-"));
+  return decodeTag(decodeURI(tagName).replace(".", "-"));
 })();
 ---
 
@@ -36,5 +29,5 @@ const fixedTagName = (() => {
       <p class="mb-3 md:mb-0 md:ml-1 md:mt-8">ページ一覧</p>
     </div>
   </div>
-  <TopPage queries={{ filters: `tags[contains]${fixedTagName}` }} />
+  <TopPage tag={fixedTagName} />
 </>

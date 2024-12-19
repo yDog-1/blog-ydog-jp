@@ -1,7 +1,13 @@
 ---
 import ArticleList from "@/components/article/articleList.astro";
+
+interface Props {
+  tag?: string;
+}
+
+const { tag } = Astro.props;
 ---
 
 <div class="mx-auto container">
-  <ArticleList />
+  <ArticleList tag={tag} />
 </div>

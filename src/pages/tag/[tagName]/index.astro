@@ -1,15 +1,27 @@
 ---
 import TagPage from "@/components/TagPageList/TagPageList.astro";
 import Layout from "@/layouts/Layout.astro";
-import type { Tag } from "@/types/Tag";
-
-export const prerender = false;
+import { articles } from "@/libs/article";
 
 const { tagName } = Astro.params;
+
+export function getStaticPaths() {
+  const paths = articles
+    ?.flatMap((article) => {
+      if (article?.tags === undefined) {
+        return null;
+      }
+      return article.tags.map((tag) => {
+        return { params: { tagName: tag } };
+      });
+    })
+    .filter(Boolean);
+  return paths;
+}
 ---
 
 <Layout>
-  <main>
-    <TagPage tagName={(tagName as Tag) || ""} />
+  <main class="container mx-auto px-2 flex-1">
+    <TagPage tagName={tagName} />
   </main>
 </Layout>

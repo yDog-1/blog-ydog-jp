@@ -2,9 +2,24 @@
 import type { Article } from "@/types/Article";
 import Card from "./card.astro";
 import { articles } from "@/libs/article";
+import { decodeTag, encodeTag } from "@/libs/tag";
 
 if (!articles) {
   throw new Error("articles is not defined");
+}
+
+interface Props {
+  tag?: string;
+}
+
+const { tag } = Astro.props;
+
+function hasTag(article: Article, tag: string | undefined): boolean {
+  if (tag === undefined) {
+    return false;
+  }
+  const encodedTag = encodeTag(tag);
+  return article.tags.includes(encodedTag);
 }
 ---
 
@@ -12,13 +27,24 @@ if (!articles) {
   class="flex flex-col mx-2 my-3 gap-2 md:grid md:grid-cols-2 md:mx-0 lg:grid-cols-3"
 >
   {
-    articles.map(
-      (article) =>
-        article && (
-          <li>
-            <Card article={article} />
-          </li>
-        ),
-    )
+    // タグが有れば一致するものを表示
+    tag
+      ? articles.map(
+          (article) =>
+            article &&
+            hasTag(article, tag) && (
+              <li>
+                <Card article={article} />
+              </li>
+            ),
+        )
+      : articles.map(
+          (article) =>
+            article && (
+              <li>
+                <Card article={article} />
+              </li>
+            ),
+        )
   }
 </ul>
