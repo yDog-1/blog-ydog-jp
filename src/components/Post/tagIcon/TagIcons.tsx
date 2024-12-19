@@ -1,4 +1,4 @@
-import TagIcon from "@/features/components/Post/tagIcon/TagIcon";
+import TagIcon from "@/components/Post/tagIcon/TagIcon";
 import type { Tag } from "@/types/Tag";
 
 type Props = { tags: string[] };

@@ -1,4 +1,4 @@
-import TagIcons from "@/features/components/Post/tagIcon/TagIcons";
+import TagIcons from "@/components/Post/tagIcon/TagIcons";
 import parseToJSX from "@/libs/post/ParseToJSX";
 import type { Content } from "@/types/Content";
 

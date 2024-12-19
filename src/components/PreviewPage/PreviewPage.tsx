@@ -1,6 +1,6 @@
 // "use client";
 // import Loading from "@/components/elements/Loading/Loading";
-// import Post from "@/features/components/Post/Post";
+// import Post from "@/components/Post/Post";
 // import type { Content } from "@/types/Content";
 // import { useEffect, useState } from "react";
 // import getPostDetail from "./getPostDetail";
