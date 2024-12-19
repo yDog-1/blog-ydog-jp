@@ -1,0 +1,32 @@
+---
+import Logo from "@/components/elements/logo/logo.astro";
+import logoList from "@/components/elements/logo/logoList";
+
+const size = 50;
+---
+
+<ul class="flex justify-center gap-16">
+  {
+    logoList.map((l) => (
+      <li>
+        <a
+          href={l.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block"
+        >
+          <div class="flex flex-col items-center font-mono">
+            <Logo
+              width={size}
+              height={size}
+              dir={l.dir.color ? l.dir.color : l.dir.black}
+              name={l.name}
+            />
+            <p class="text-slate-400 text-sm my-2">{l.name}</p>
+            <p class="text-lg">{l.id}</p>
+          </div>
+        </a>
+      </li>
+    ))
+  }
+</ul>

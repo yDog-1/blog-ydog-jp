@@ -1,9 +1,4 @@
-export type ContactList = {
+export type Contact = {
   href: string;
   id: string;
-  logo: {
-    size?: number;
-    darkMode?: boolean;
-    SVG?: (props: LogoProps) => JSX.Element;
-  };
 };

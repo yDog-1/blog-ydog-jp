@@ -1,8 +1,7 @@
 ---
-import Github from "../elements/logo/Github";
-import X from "../elements/logo/X";
-const darkMode = false;
-const iconSize = 15;
+import Logo from "@/components/elements/logo/logo.astro";
+import logoList from "@/components/elements/logo/logoList";
+const size = 18;
 ---
 
 <header class="bg-red-600 py-3 md:pb-5 md:pt-10">
@@ -14,30 +13,33 @@ const iconSize = 15;
         </h1>
       </a>
       <div class="ml-auto flex md:-mb-1">
-        <ul class="mb-2 mt-auto flex items-end space-x-3 md:m-0 md:mb-1">
-          <li class="px-2 -mb-[1px] text-lg md:hover:underline">
-            <a href="/">TOP</a>
+        <ul
+          class="mb-2 mt-auto flex items-end space-x-4 md:m-0 md:mb-1 md:space-x-2"
+        >
+          <li
+            class="px-2 -mb-[1px] text-lg md:hover:underline invisible md:visible"
+          >
+            <a href="/" class="text-xl">TOP</a>
           </li>
-          <li class="rounded md:hover:bg-slate-950">
-            <a
-              href="https://x.com/yDog_1"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="block p-1"
-            >
-              <X width={iconSize} height={iconSize} darkMode={darkMode} />
-            </a>
-          </li>
-          <li class="rounded md:hover:bg-slate-950">
-            <a
-              href="https://github.com/yDog-1"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="block p-1"
-            >
-              <Github width={iconSize} height={iconSize} darkMode={darkMode} />
-            </a>
-          </li>
+          {
+            logoList.map((l) => (
+              <li class="rounded md:hover:bg-slate-950">
+                <a
+                  href={l.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block p-1"
+                >
+                  <Logo
+                    width={size}
+                    height={size}
+                    dir={l.dir.white}
+                    name={l.name}
+                  />
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </div>
     </div>
