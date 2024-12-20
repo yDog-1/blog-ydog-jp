@@ -1,0 +1,19 @@
+---
+import TagIcon from "@/components/elements/tag/tagIcon.astro";
+import { decodeTag } from "@/libs/tag";
+
+interface Props {
+  tags: string[];
+}
+
+const { tags } = Astro.props;
+---
+
+<ul class="flex flex-wrap gap-1 text-center">
+  {
+    tags.map((t) => {
+      const tag = decodeTag(t);
+      return <TagIcon tag={tag} />;
+    })
+  }
+</ul>

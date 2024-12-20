@@ -1,0 +1,27 @@
+---
+import { TagColor, tagColors } from "./tagColors";
+
+const blackText = "#0f172a";
+const whiteText = "#f8fafc";
+
+interface Props {
+  tagName: string;
+}
+
+const { tagName } = Astro.props;
+
+const tag =
+  tagColors.find((tag) => tag.tag === tagName) ??
+  new TagColor(tagName, [0, 0, 50]);
+
+const textColor = tag.isBlackText ? blackText : whiteText;
+---
+
+<div
+  style={{
+    backgroundColor: `${tag.hsl}`,
+    color: `${textColor}`,
+  }}
+>
+  <slot />
+</div>

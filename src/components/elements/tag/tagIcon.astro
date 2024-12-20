@@ -1,0 +1,18 @@
+---
+import StyleTag from "@/components/elements/tag/styleTag.astro";
+import { encodeTag } from "@/libs/tag";
+
+interface Props {
+  tag: string;
+}
+
+const { tag } = Astro.props;
+---
+
+<li class="drop-shadow-lg *:rounded-md">
+  <StyleTag tagName={tag}>
+    <a class="p-2" href={`/tag/${encodeTag(tag)}`}>
+      {tag}
+    </a>
+  </StyleTag>
+</li>
