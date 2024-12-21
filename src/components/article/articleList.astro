@@ -1,8 +1,8 @@
 ---
-import type { Article } from "@/types/Article";
-import Card from "./card.astro";
 import { articles } from "@/libs/article";
 import { decodeTag, encodeTag } from "@/libs/tag";
+import type { Article } from "@/types/Article";
+import Card from "./card.astro";
 
 if (!articles) {
   throw new Error("articles is not defined");
