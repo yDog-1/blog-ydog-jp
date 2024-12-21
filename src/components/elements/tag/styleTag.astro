@@ -1,8 +1,6 @@
 ---
-import { TagColor, tagColors } from "./tagColors";
-
-const blackText = "#0f172a";
-const whiteText = "#f8fafc";
+import { tagColors, defaultTagColor } from "@/libs/tag";
+import { textWhite } from "@/libs/color";
 
 interface Props {
   tagName: string;
@@ -10,18 +8,19 @@ interface Props {
 
 const { tagName } = Astro.props;
 
-const tag =
-  tagColors.find((tag) => tag.tag === tagName) ??
-  new TagColor(tagName, [0, 0, 50]);
-
-const textColor = tag.isBlackText ? blackText : whiteText;
+const tagStyle = tagColors?.find((tag) => tag.name === tagName) ?? {
+  bg: defaultTagColor,
+  textColor: textWhite,
+};
 ---
 
-<div
-  style={{
-    backgroundColor: `${tag.hsl}`,
-    color: `${textColor}`,
-  }}
->
+<div>
   <slot />
 </div>
+
+<style define:vars={{ bgColor: tagStyle.bg, textColor: tagStyle.textColor }}>
+  div {
+    background-color: var(--bgColor);
+    color: var(--textColor);
+  }
+</style>

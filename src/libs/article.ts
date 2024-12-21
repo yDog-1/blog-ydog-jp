@@ -10,13 +10,13 @@ export const articles = await getArticles();
 
 async function getArticles() {
   const sdk = NewGitHubSdk();
-  const q = await sdk.listArticles(articleVariables);
+  const data = await sdk.listArticles(articleVariables);
 
-  if (!isTree(q.repository?.object)) {
+  if (!isTree(data.repository?.object)) {
     return;
   }
 
-  const articles = q.repository.object.entries?.map((c) => {
+  const articles = data.repository.object.entries?.map((c) => {
     if (!isBlob(c.object) || !c.object.text) {
       return;
     }
