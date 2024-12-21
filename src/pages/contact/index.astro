@@ -1,9 +1,21 @@
 ---
 import LogoList from "@/components/elements/logo/logoList.astro";
+import Head from "@/components/Head.astro";
 import Layout from "@/layouts/Layout.astro";
+
+const title = "Contact yDog";
+const description = "yDogへのお問い合わせページです。";
+const path = "/contact";
 ---
 
 <Layout>
+  <Head
+    slot="head"
+    title={title}
+    description={description}
+    contentType="article"
+    path={path}
+  />
   <main class="flex flex-1">
     <div class="my-10 flex flex-1 flex-col items-center justify-center">
       <LogoList />

@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Layout from "@/layouts/Layout.astro";
+import Head from "@/components/Head.astro";
 
 type History = {
   year: number;
@@ -10,14 +11,25 @@ type History = {
 
 const histories: History[] = [
   { year: 2001, month: 1, sentence: "誕生" },
-  { year: 2019, month: 3, sentence: "工業高校卒業、某繊維大手企業に就職" },
+  { year: 2019, month: 3, sentence: "工業高校卒業、大手製造業に就職" },
   { year: 2023, month: 6, sentence: "Javascriptの学習を開始" },
   { year: 2023, month: 10, sentence: "Next.jsの学習を開始" },
   { year: 2024, month: 1, sentence: "ITの道へ進むことを決意" },
 ];
+
+const title = "About yDog";
+const description = "yDogについての紹介ページです。";
+const path = "/about";
 ---
 
 <Layout>
+  <Head
+    slot="head"
+    title={title}
+    description={description}
+    contentType="article"
+    path={path}
+  />
   <main class="flex flex-1">
     <div class="my-10 container mx-auto">
       <div class="mx-3 grid grid-cols-1 md:grid-cols-2 md:justify-between">

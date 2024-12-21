@@ -1,9 +1,13 @@
 ---
+import Head from "@/components/Head.astro";
 import TopPage from "@/components/layouts/TopPage.astro";
 import Layout from "@/layouts/Layout.astro";
+
+const description = "yDogによる技術ブログです。";
 ---
 
 <Layout>
+  <Head slot="head" description={description} contentType="blog" />
   <main class="flex-1 px-2">
     <TopPage />
   </main>

@@ -1,0 +1,43 @@
+---
+interface Props {
+  title?: string;
+  description: string;
+  contentType?: string;
+  path?: string;
+}
+
+const { title, description, contentType, path } = Astro.props;
+const siteName = "yDog Tech Blog";
+const siteURL = "https://blog.ydog.jp";
+const url = path ? `${siteURL}${path}` : siteURL;
+const convertedTitle = title ? `${title} | ${siteName}` : siteName;
+const metaOgType = contentType ? contentType : "website";
+const auther = "yDog";
+const themeColor = "#DC2626";
+const imgURL = `${siteURL}public/images/yDog.webp`;
+const twitterID = "@yDog_1";
+---
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="icon" href="/favicon.ico" type="image/x-icon" />
+<meta name="generator" content={Astro.generator} />
+<meta name="theme-color" content={themeColor} />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<meta name="robots" content="index, follow" />
+<title>{convertedTitle}</title>
+<meta name="description" content={description} />
+<meta name="author" content={auther} />
+
+<meta property="og:title" content={convertedTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imgURL} />
+<meta property="og:url" content={url} />
+<meta property="og:type" content={metaOgType} />
+<meta property="og:site_name" content={siteName} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={convertedTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imgURL} />
+<meta name="twitter:site" content={twitterID} />

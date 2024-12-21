@@ -1,4 +1,5 @@
 ---
+import Head from "@/components/Head.astro";
 import TagPage from "@/components/TagPageList/TagPageList.astro";
 import Layout from "@/layouts/Layout.astro";
 import { articles } from "@/libs/article";
@@ -21,6 +22,12 @@ export function getStaticPaths() {
 ---
 
 <Layout>
+  <Head
+    slot="head"
+    title={tagName}
+    description={`タグ「${tagName}」の記事一覧`}
+    contentType="article"
+  />
   <main class="container mx-auto px-2 flex-1">
     <TagPage tagName={tagName} />
   </main>
