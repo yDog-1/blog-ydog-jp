@@ -72,7 +72,7 @@ function isValidArticleData(data: unknown): data is ArticleFrontmatter {
 }
 
 function isValidDate(date: Date): boolean {
-  return Number.isNaN(date.getTime());
+  return !Number.isNaN(date.getTime());
 }
 
 function isPublished(published_at: Date): boolean {
