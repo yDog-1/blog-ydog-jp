@@ -1,48 +1,43 @@
-# Astro Starter Kit: Basics
+# yDog Tech Blog
 
-```sh
-npm create astro@latest -- --template basics
+技術ブログのソースコードリポジトリです。[Astro](https://astro.build)を使用して構築されています。
+
+## 🚀 機能
+
+- Astroによる静的サイト生成
+- Tailwind CSSによるスタイリング
+- マークダウンによる記事管理
+- タグによる記事分類
+- レスポンシブデザイン
+
+## 🛠️ 技術スタック
+
+- [Astro](https://astro.build) - WebフレームワークとSSG
+- [Tailwind CSS](https://tailwindcss.com) - スタイリング
+- [Biome](https://biomejs.dev) - リンターとフォーマッター
+- [Bun](https://bun.sh) - JavaScript ランタイムとパッケージマネージャー
+
+## 📦 インストール
+
+```bash
+# 依存関係のインストール
+bun install
+
+# 開発サーバーの起動
+bun run dev
+
+# 本番用ビルド
+bun run build
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## 🗂️ プロジェクト構成
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+- `src/pages/` - ページコンポーネント
+- `src/components/` - 再利用可能なコンポーネント
+- `src/layouts/` - ページレイアウト
+- `src/assets/` - 画像などの静的アセット
+- `src/libs/` - ユーティリティ関数
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## 📝 ライセンス
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+このプロジェクトはMITライセンスの下で公開されています。
