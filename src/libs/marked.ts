@@ -1,29 +1,33 @@
-import hljs from "highlight.js";
 import { Marked } from "marked";
-import { markedHighlight } from "marked-highlight";
+import { codeToHtml } from "shiki";
 
-export const marked = new Marked(
-  markedHighlight({
-    highlight(code, lang, info) {
-      const [languageName] = lang.split(":");
-      const language = hljs.getLanguage(languageName)
-        ? languageName
-        : "plaintext";
-      return hljs.highlight(code, { language }).value;
-    },
-  }),
-);
-
-marked.use({
+export const marked = new Marked({
+  async: true,
   extensions: [
     {
       name: "code",
       renderer(token) {
         const { text, lang } = token;
-        const [languageName, filename] = lang.split(":");
-        const id = text.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-        return `<div>${filename ? `<div class="filename">${filename}</div>` : ""}<pre><code class="${languageName}">${text}</code></pre></div>`;
+        const filename = lang.split(":")[1];
+        return `<figure class="code-block">${filename ? `<figcaption class="filename">${filename}</figcaption>` : ""}${text}`;
       },
     },
   ],
+  async walkTokens(token) {
+    if (token.type === "code") {
+      const { text: rawText, lang } = token;
+      const languageName = lang.split(":")[0];
+      const text = await highlight(rawText, languageName);
+      token.text = text;
+    }
+  },
 });
+
+async function highlight(rawCode: string, lang: string) {
+  const html = codeToHtml(rawCode, {
+    lang: lang,
+    theme: "github-dark-default",
+  });
+
+  return html;
+}
