@@ -206,9 +206,6 @@ const path = `/article/${article.title}`;
     > p > code {
       @apply bg-gray-200 rounded-md px-1.5 font-mono;
     }
-    > p > img {
-      @apply max-h-72;
-    }
     /* コードブロック */
     figure.code-block {
       & > figcaption.filename {
@@ -223,6 +220,10 @@ const path = `/article/${article.title}`;
           @apply bg-indigo-500 rounded-full;
         }
       }
+    }
+    /* 画像 */
+    img {
+      @apply mx-auto md:mr-auto md:mx-0;
     }
   }
 </style>

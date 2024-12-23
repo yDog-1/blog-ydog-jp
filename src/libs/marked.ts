@@ -12,6 +12,23 @@ export const marked = new Marked({
         return `<figure class="code-block">${filename ? `<figcaption class="filename">${filename}</figcaption>` : ""}${text}`;
       },
     },
+    {
+      name: "image",
+      renderer(token) {
+        const { href, text, title } = token;
+        // text: alt|size or alt
+        const [alt, size] = text.split("|");
+
+        // size: widthxheight or width or empty
+        const [width, height] = size?.split("x") || [size, ""];
+        const sizeAttr = height
+          ? `width="${width}" height="${height}"`
+          : width
+            ? `width="${width}"`
+            : "";
+        return `<img src="${href}" title="${title}" alt="${alt}" ${sizeAttr} >`;
+      },
+    },
   ],
   async walkTokens(token) {
     if (token.type === "code") {
