@@ -9,6 +9,7 @@ export type Article = {
 type ArticleInput = {
   name: string;
   text: string;
+  isPreview?: boolean;
 };
 
 type ArticleFrontmatter = {

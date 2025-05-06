@@ -29,15 +29,63 @@ async function getArticles() {
   });
 }
 
+/**
+ * タイトルから未公開の記事を取得する
+ * @param title 記事のタイトル（拡張子なし）
+ * @returns 記事データ、または未公開や存在しない場合はundefined
+ */
+export async function getUnpublishedArticleByTitle(
+  title: string,
+): Promise<Article | undefined> {
+  const sdk = NewGitHubSdk();
+  const data = await sdk.listArticles(articleVariables);
+
+  if (!isTree(data.repository?.object)) {
+    return undefined;
+  }
+
+  // ファイル拡張子(.md)を追加してエントリを検索
+  const articleEntry = data.repository.object.entries?.find(
+    (entry) => entry.name === `${title}.md`,
+  );
+
+  if (
+    !articleEntry ||
+    !isBlob(articleEntry.object) ||
+    !articleEntry.object.text
+  ) {
+    return undefined;
+  }
+
+  const article = parseToArticle({
+    name: articleEntry.name,
+    text: articleEntry.object.text,
+    isPreview: true,
+  });
+
+  // 記事がundefinedか、すでに公開済みの場合はundefinedを返す
+  if (!article || isPublished(article.publishedAt)) {
+    return undefined;
+  }
+
+  return article;
+}
+
 function parseToArticle(input: ArticleInput): Article | undefined {
   const { content, data } = matter(input.text);
+  const isPreview = input.isPreview ?? false;
 
   if (!isValidArticleData(data)) {
     return undefined;
   }
 
-  const published_at = new Date(data.published_at);
-  if (!isPublished(published_at) && !isValidDate(published_at)) {
+  // プレビュー用の日付
+  const bigFuture = 100000000000000;
+  const published_at = new Date(data.published_at || bigFuture);
+  if (
+    (!isPublished(published_at) || !isValidDate(published_at)) &&
+    !isPreview
+  ) {
     return undefined;
   }
 

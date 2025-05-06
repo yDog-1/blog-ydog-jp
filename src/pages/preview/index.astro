@@ -1,0 +1,52 @@
+---
+export const prerender = false; // Not needed in 'server' mode
+import Head from "@/components/Head.astro";
+import ArticlePage from "@/components/article/articlePage.astro";
+import Layout from "@/layouts/Layout.astro";
+import { getUnpublishedArticleByTitle } from "@/libs/article.ts";
+
+// URLからtitleパラメータを取得
+const title = Astro.url.searchParams.get("title");
+
+// titleがない場合はエラーメッセージを表示するためのフラグ
+let errorMessage = "";
+let article;
+
+// titleパラメータが存在する場合、未公開記事を取得
+if (title) {
+  article = await getUnpublishedArticleByTitle(title);
+  if (!article) {
+    errorMessage = "指定された記事が見つからないか、すでに公開されています。";
+  }
+} else {
+  errorMessage = "記事のタイトルを指定してください。";
+}
+
+const path = "/preview";
+---
+
+<Layout>
+  <Head
+    slot="head"
+    title={article ? `${article.title} (プレビュー)` : "プレビュー"}
+    description={article ? article.description : "記事プレビュー"}
+    contentType="article"
+    path={path}
+  />
+  <main>
+    {
+      article ? (
+        <ArticlePage article={article} />
+      ) : (
+        <div class="container mx-auto px-4 py-8">
+          <h1 class="text-2xl font-bold mb-4">プレビューエラー</h1>
+          <p class="text-red-600">{errorMessage}</p>
+          <p class="mt-4">
+            プレビューするには、URLパラメータに<code>?title=記事名</code>を指定してください。
+          </p>
+          <p>{title}</p>
+        </div>
+      )
+    }
+  </main>
+</Layout>
