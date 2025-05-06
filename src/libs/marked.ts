@@ -9,7 +9,7 @@ export const marked = new Marked({
       renderer(token) {
         const { text, lang } = token;
         const filename = lang.split(":")[1];
-        return `<figure class="code-block">${filename ? `<figcaption class="filename">${filename}</figcaption>` : ""}${text}`;
+        return `<figure class="code-block">${filename ? `<figcaption class="filename">${filename}</figcaption>` : ""}${text}</figure>`;
       },
     },
     {
@@ -26,7 +26,7 @@ export const marked = new Marked({
           : width
             ? `width="${width}"`
             : "";
-        return `<img src="${href}" title="${title}" alt="${alt}" ${sizeAttr} >`;
+        return `<img src="${href}" title="${title}" alt="${alt}" ${sizeAttr}/>`;
       },
     },
   ],
