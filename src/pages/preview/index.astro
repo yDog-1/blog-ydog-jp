@@ -7,19 +7,13 @@ import { getUnpublishedArticleByTitle } from "@/libs/article.ts";
 
 // URLからtitleパラメータを取得
 const title = Astro.url.searchParams.get("title");
+if(title === null) {
+  return Astro.redirect("/");
+}
 
-// titleがない場合はエラーメッセージを表示するためのフラグ
-let errorMessage = "";
-let article;
-
-// titleパラメータが存在する場合、未公開記事を取得
-if (title) {
-  article = await getUnpublishedArticleByTitle(title);
-  if (!article) {
-    errorMessage = "指定された記事が見つからないか、すでに公開されています。";
-  }
-} else {
-  errorMessage = "記事のタイトルを指定してください。";
+const article = await getUnpublishedArticleByTitle(title);
+if(article === undefined) {
+  return Astro.redirect("/")
 }
 
 const path = "/preview";
@@ -34,19 +28,6 @@ const path = "/preview";
     path={path}
   />
   <main>
-    {
-      article ? (
-        <ArticlePage article={article} />
-      ) : (
-        <div class="container mx-auto px-4 py-8">
-          <h1 class="text-2xl font-bold mb-4">プレビューエラー</h1>
-          <p class="text-red-600">{errorMessage}</p>
-          <p class="mt-4">
-            プレビューするには、URLパラメータに<code>?title=記事名</code>を指定してください。
-          </p>
-          <p>{title}</p>
-        </div>
-      )
-    }
+      <ArticlePage article={article} />
   </main>
 </Layout>
