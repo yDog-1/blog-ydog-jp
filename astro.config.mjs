@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 
 import tailwind from "@astrojs/tailwind";
 
@@ -11,4 +11,9 @@ export default defineConfig({
   adapter: cloudflare(),
   site: "https://blog.ydog.jp",
   integrations: [tailwind(), sitemap()],
+  env: {
+    schema: {
+      GITHUB_TOKEN: envField.string({ context: "server", access: "secret" }),
+    },
+  },
 });
