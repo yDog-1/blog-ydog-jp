@@ -9,21 +9,22 @@ export const articleVariables = {
   name: "articles",
 };
 
-const authorizationToken = import.meta.env.GITHUB_TOKEN;
+const githubToken = import.meta.env.GITHUB_TOKEN;
 
-if (!authorizationToken) {
+if (!githubToken) {
   throw new Error("GITHUB_TOKEN is not set");
 }
 
-export const NewGitHubSdk = () =>
-  getSdk(
+export const NewGitHubSdk = (GithubToken = githubToken) => {
+  return getSdk(
     client,
     <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>) => {
       return action({
-        Authorization: `Bearer ${authorizationToken}`,
+        Authorization: `Bearer ${GithubToken}`,
       });
     },
   );
+};
 
 export const isTree = (
   object: { __typename?: string } | null | undefined,

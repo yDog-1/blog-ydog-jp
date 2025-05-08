@@ -31,13 +31,15 @@ async function getArticles() {
 
 /**
  * タイトルから未公開の記事を取得する
+ * @param githubToken GitHubのアクセストークン
  * @param title 記事のタイトル（拡張子なし）
  * @returns 記事データ、または未公開や存在しない場合はundefined
  */
 export async function getUnpublishedArticleByTitle(
+  githubToken: string,
   title: string,
 ): Promise<Article | undefined> {
-  const sdk = NewGitHubSdk();
+  const sdk = NewGitHubSdk(githubToken);
   const data = await sdk.listArticles(articleVariables);
 
   if (!isTree(data.repository?.object)) {
