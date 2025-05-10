@@ -2,7 +2,7 @@
 import Head from "@/components/Head.astro";
 import ArticlePage from "@/components/article/articlePage.astro";
 import Layout from "@/layouts/Layout.astro";
-import { articles } from "@/libs/article";
+import articles from "@/libs/articles";
 
 export function getStaticPaths() {
   const paths = articles

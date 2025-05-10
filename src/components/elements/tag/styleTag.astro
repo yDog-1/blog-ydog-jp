@@ -1,12 +1,13 @@
 ---
 import { textWhite } from "@/libs/color";
-import { defaultTagColor, tagColors } from "@/libs/tag";
+import { defaultTagColor, getTagColors } from "@/libs/tag";
 
 interface Props {
   tagName: string;
 }
 
 const { tagName } = Astro.props;
+const tagColors = await getTagColors();
 
 const tagStyle = tagColors?.find((tag) => tag.name === tagName) ?? {
   bg: defaultTagColor,

@@ -6,9 +6,7 @@ import type {
 } from "@/types/Article";
 import matter from "gray-matter";
 
-export const articles = await getArticles();
-
-async function getArticles() {
+export async function getArticles() {
   const sdk = NewGitHubSdk();
   const data = await sdk.listArticles(articleVariables);
 
