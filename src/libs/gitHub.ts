@@ -1,3 +1,4 @@
+import { GITHUB_TOKEN } from "astro:env/server";
 import { GraphQLClient } from "graphql-request";
 import { getSdk } from "./generated/client";
 
@@ -9,18 +10,12 @@ export const articleVariables = {
   name: "articles",
 };
 
-const githubToken = import.meta.env.GITHUB_TOKEN;
-
-if (!githubToken) {
-  throw new Error("GITHUB_TOKEN is not set");
-}
-
-export const NewGitHubSdk = (GithubToken = githubToken) => {
+export const NewGitHubSdk = () => {
   return getSdk(
     client,
     <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>) => {
       return action({
-        Authorization: `Bearer ${GithubToken}`,
+        Authorization: `Bearer ${GITHUB_TOKEN}`,
       });
     },
   );

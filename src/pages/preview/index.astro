@@ -1,6 +1,6 @@
 ---
 export const prerender = false;
-import { getSecret } from "astro:env/server";
+// import { getSecret } from "astro:env/server";
 import Head from "@/components/Head.astro";
 import ArticlePage from "@/components/article/articlePage.astro";
 import Layout from "@/layouts/Layout.astro";
@@ -12,12 +12,12 @@ if (title === null) {
   return Astro.redirect("/");
 }
 
-const githubToken = getSecret("GITHUB_TOKEN");
-if(!githubToken) {
-  throw new Error("GITHUB_TOKEN is not set");
-}
+// const githubToken = getSecret("GITHUB_TOKEN");
+// if (!githubToken) {
+//   throw new Error("GITHUB_TOKEN is not set");
+// }
 
-const article = await getUnpublishedArticleByTitle(githubToken, title);
+const article = await getUnpublishedArticleByTitle(title);
 if (article === undefined) {
   return Astro.redirect("/");
 }

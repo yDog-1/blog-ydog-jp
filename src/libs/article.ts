@@ -36,10 +36,10 @@ async function getArticles() {
  * @returns 記事データ、または未公開や存在しない場合はundefined
  */
 export async function getUnpublishedArticleByTitle(
-  githubToken: string,
+  // githubToken: string,
   title: string,
 ): Promise<Article | undefined> {
-  const sdk = NewGitHubSdk(githubToken);
+  const sdk = NewGitHubSdk();
   const data = await sdk.listArticles(articleVariables);
 
   if (!isTree(data.repository?.object)) {
