@@ -11,6 +11,8 @@ export const articleVariables = {
 };
 
 export const NewGitHubSdk = () => {
+  const isValidToken = GITHUB_TOKEN && GITHUB_TOKEN.length > 0;
+  console.log("NewGitHubSdk: ", isValidToken);
   return getSdk(
     client,
     <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>) => {
