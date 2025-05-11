@@ -26,8 +26,27 @@ try {
   if (article === undefined) {
     return Astro.redirect("/");
   }
-} catch (error) {
-  console.error("Error fetching article: ", error);
+} catch (error: any) {
+  console.error("Error fetching article raw message: ", error.message);
+  if (error.response) {
+    console.error("GraphQL API Response Status:", error.response.status); // これは403のはず
+    console.error(
+      "GraphQL API Response Headers:",
+      JSON.stringify(error.response.headers, null, 2),
+    );
+    // GitHub APIは通常、エラー詳細を `errors` 配列または `data` オブジェクト内で返す
+    console.error(
+      "GraphQL API Response Errors/Data:",
+      JSON.stringify(error.response.errors || error.response.data, null, 2),
+    );
+  }
+  if (error.request) {
+    console.error("GraphQL API Request Query:", error.request.query);
+    console.error(
+      "GraphQL API Request Variables:",
+      JSON.stringify(error.request.variables, null, 2),
+    );
+  }
   return Astro.redirect("/");
 }
 
