@@ -1,11 +1,12 @@
 ---
 export const prerender = false;
-// import { getSecret } from "astro:env/server";
+import { getSecret } from "astro:env/server";
 import Head from "@/components/Head.astro";
 import ArticlePage from "@/components/article/articlePage.astro";
 import Layout from "@/layouts/Layout.astro";
 import { getUnpublishedArticleByTitle } from "@/libs/article.ts";
 import type { Article } from "@/types/Article";
+import { GraphQLClient } from "graphql-request";
 
 // URLからtitleパラメータを取得
 const title = Astro.url.searchParams.get("title");
@@ -19,6 +20,43 @@ console.log("title: ", title);
 // if (!githubToken) {
 //   throw new Error("GITHUB_TOKEN is not set");
 // }
+
+const GITHUB_TOKEN = getSecret("GITHUB_TOKEN");
+
+async function testGitHubApiAuth() {
+  try {
+    const client = new GraphQLClient("https://api.github.com/graphql", {
+      headers: {
+        Authorization: `Bearer ${GITHUB_TOKEN}`, // GITHUB_TOKEN がここでも正しく参照できる前提
+      },
+    });
+    const query = "query { viewer { login } }";
+    console.log(
+      "Testing with simple query, Token starts with:",
+      GITHUB_TOKEN ? GITHUB_TOKEN.substring(0, 4) : "undefined",
+    );
+    const data: { viewer: { login: string } } = await client.request(query);
+    console.log("Simple query successful. Viewer login:", data.viewer.login);
+  } catch (error: any) {
+    console.error("Error in simple query test:", error.message);
+    if (error.response) {
+      console.error(
+        "Simple Query - GraphQL API Response Status:",
+        error.response.status,
+      );
+      console.error(
+        "Simple Query - GraphQL API Response Headers:",
+        JSON.stringify(error.response.headers, null, 2),
+      );
+      console.error(
+        "Simple Query - GraphQL API Response Errors/Data:",
+        JSON.stringify(error.response.errors || error.response.data, null, 2),
+      );
+    }
+  }
+}
+
+await testGitHubApiAuth()
 
 let article: Article | undefined;
 try {
