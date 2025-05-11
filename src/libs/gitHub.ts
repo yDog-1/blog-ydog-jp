@@ -3,7 +3,6 @@ import { GraphQLClient } from "graphql-request";
 import { getSdk } from "./generated/client";
 
 const endpoint = "https://api.github.com/graphql";
-const client = new GraphQLClient(endpoint);
 
 export const articleVariables = {
   owner: "yDog-1",
@@ -11,6 +10,7 @@ export const articleVariables = {
 };
 
 export const NewGitHubSdk = () => {
+  const client = new GraphQLClient(endpoint);
   return getSdk(
     client,
     <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>) => {
