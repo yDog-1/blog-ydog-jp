@@ -39,7 +39,9 @@ export async function getUnpublishedArticleByTitle(
 ): Promise<Article | undefined> {
   console.log("getUnpublishedArticleByTitle: ", title);
   const sdk = NewGitHubSdk();
+  console.log("Got SDK");
   const data = await sdk.listArticles(articleVariables);
+  console.log("Got data");
 
   if (!isTree(data.repository?.object)) {
     return undefined;
