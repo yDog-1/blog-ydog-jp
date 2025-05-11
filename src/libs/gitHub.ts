@@ -11,7 +11,6 @@ export const articleVariables = {
 };
 
 export const NewGitHubSdk = () => {
-  console.log("GITHUB_TOKEN: ", GITHUB_TOKEN);
   return getSdk(
     client,
     <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>) => {
