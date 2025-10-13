@@ -3,9 +3,11 @@
 @layer base {
   :root {
     --default-font-family:
-      "Zen Kaku Gothic New", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
-      "Segoe UI Symbol", "Noto Color Emoji";
+      "Zen Kaku Gothic New", ui-sans-serif, system-ui, sans-serif,
+      "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+      "Noto Color Emoji";
   }
 }
 
+/* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind v4 uses @source */
 @source "./src/**/*.{astro,html,js,jsx,ts,tsx,md,mdx}";
