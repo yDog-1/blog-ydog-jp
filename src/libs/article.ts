@@ -1,10 +1,10 @@
-import { NewGitHubSdk, articleVariables, isBlob, isTree } from "@/libs/gitHub";
+import matter from "gray-matter";
+import { articleVariables, isBlob, isTree, NewGitHubSdk } from "@/libs/gitHub";
 import type {
   Article,
   ArticleFrontmatter,
   ArticleInput,
 } from "@/types/Article";
-import matter from "gray-matter";
 
 export const articles = await getArticles();
 
@@ -16,17 +16,22 @@ async function getArticles() {
     return;
   }
 
-  const articles = data.repository.object.entries?.map((c) => {
-    if (!isBlob(c.object) || !c.object.text) {
-      return;
-    }
+  const articles = data.repository.object.entries
+    ?.flatMap((entry) => {
+      if (!isBlob(entry.object) || !entry.object.text) {
+        return [];
+      }
 
-    return parseToArticle({ name: c.name, text: c.object.text });
-  });
-  return articles?.sort((a, b) => {
-    if (!a || !b) return 0;
-    return b.publishedAt.getTime() - a.publishedAt.getTime();
-  });
+      const parsed = parseToArticle({
+        name: entry.name,
+        text: entry.object.text,
+      });
+
+      return parsed ? [parsed] : [];
+    })
+    .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
+
+  return articles;
 }
 
 /**

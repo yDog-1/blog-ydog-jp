@@ -1,7 +1,7 @@
-import type { TagColor } from "@/types/Color";
 import matter from "gray-matter";
+import type { TagColor } from "@/types/Color";
 import { getTextColor } from "./color";
-import { NewGitHubSdk, articleVariables, isBlob, isTree } from "./gitHub";
+import { articleVariables, isBlob, isTree, NewGitHubSdk } from "./gitHub";
 
 // . が使用できないため、- と入力したものを . に変換する
 export const decodeTag = (tagName: string) => {
