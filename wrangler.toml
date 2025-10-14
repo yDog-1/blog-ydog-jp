@@ -3,6 +3,3 @@ name = "blog-ydog-jp"
 pages_build_output_dir = "dist"
 compatibility_date = "2024-12-21"
 
-[vars]
-BUN_VERSION = "1.2.12"
-
