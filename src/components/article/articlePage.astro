@@ -33,12 +33,12 @@ const [formatedPublishedAt] = article.publishedAt.toISOString().split("T");
     </header>
   </div>
   <section class="container mx-auto px-2 mt-10 max-w-screen-md">
-    <div set:html={content} class="mx-2 md:mx-0 article" />
+    <div set:html={content} class="mx-2 md:mx-0 article" data-article-content />
   </section>
 </article>
-<style>
+<style is:global>
   @reference "@/styles/tailwind.css";
-  .article {
+  .article[data-article-content] {
     > h1,
     > h2,
     > h3,
