@@ -7,6 +7,7 @@ import { defineConfig } from "astro/config";
 
 export default defineConfig({
   adapter: cloudflare(),
+  session: false,
   site: "https://blog.ydog.jp",
   integrations: [sitemap()],
   vite: {

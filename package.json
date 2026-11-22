@@ -11,13 +11,13 @@
     "fmtlint": "bunx biome check --write ."
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^12.6.13",
+    "@astrojs/cloudflare": "^14.4.9",
     "@astrojs/sitemap": "^3.7.6",
     "@fontsource/zen-kaku-gothic-new": "^5.3.1",
     "@graphql-codegen/typescript": "^7.0.1",
     "@graphql-codegen/typescript-graphql-request": "^8.0.2",
     "@graphql-codegen/typescript-operations": "^7.0.1",
-    "astro": "^5.18.2",
+    "astro": "^7.4.13",
     "caniuse-lite": "^1.0.30001826",
     "graphql": "^16.15.0",
     "graphql-request": "^7.4.0",
