@@ -18,7 +18,7 @@ export const encodeTag = (tagName: string) => {
   return tagName;
 };
 
-async function getTagColors(): Promise<TagColor[] | undefined> {
+export async function getTagColors(): Promise<TagColor[] | undefined> {
   const sdk = NewGitHubSdk();
   const data = await sdk.listArticles(articleVariables);
 
@@ -55,5 +55,3 @@ async function getTagColors(): Promise<TagColor[] | undefined> {
 }
 
 export const defaultTagColor = "#4D4D4D";
-
-export const tagColors = await getTagColors();

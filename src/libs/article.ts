@@ -6,9 +6,7 @@ import type {
   ArticleInput,
 } from "@/types/Article";
 
-export const articles = await getArticles();
-
-async function getArticles() {
+export async function getArticles() {
   const sdk = NewGitHubSdk();
   const data = await sdk.listArticles(articleVariables);
 

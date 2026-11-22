@@ -2,11 +2,12 @@
 import Head from "@/components/Head.astro";
 import TagPage from "@/components/TagPageList/TagPageList.astro";
 import Layout from "@/layouts/Layout.astro";
-import { articles } from "@/libs/article";
+import { getArticles } from "@/libs/article";
 
 const { tagName } = Astro.params;
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const articles = await getArticles();
   const paths = articles
     ?.flatMap((article) => {
       if (article?.tags === undefined) {
