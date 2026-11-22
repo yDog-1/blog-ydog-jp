@@ -1,6 +1,35 @@
 import { expect, test } from "bun:test";
 import { marked } from "./marked";
 
+test.each([
+  ["![photo](image.png)", '<img src="image.png" title="null" alt="photo" />'],
+  ["![photo|320](image.png \"caption\")", '<img src="image.png" title="caption" alt="photo" width="320"/>'],
+  ["![photo|320x200](image.png \"caption\")", '<img src="image.png" title="caption" alt="photo" width="320" height="200"/>'],
+])("renders image attributes for %s", async (markdown, image) => {
+  expect(await marked.parse(markdown)).toBe(`<p>${image}</p>\n`);
+});
+
+test("renders a fenced code block without a filename and escapes code", async () => {
+  const html = await marked.parse("```js\nconst x = 1 < 2;\n```");
+
+  expect(html).toStartWith('<figure class="code-block"><pre class="shiki github-dark-default"');
+  expect(html).not.toContain("<figcaption");
+  expect(html).toContain("&#x3C;");
+  expect(html).toEndWith("</code></pre></figure>");
+});
+
+test("renders an unlabelled fenced code block as plain text", async () => {
+  const html = await marked.parse("```\nhello\n```");
+
+  expect(html).toContain('<figure class="code-block"><pre class="shiki github-dark-default"');
+  expect(html).toContain("<span>hello</span>");
+  expect(html).not.toContain("<figcaption");
+});
+
+test("rejects an unknown code language", async () => {
+  await expect(marked.parse("```no-such-language\nhello\n```")).rejects.toThrow("Language `no-such-language`");
+});
+
 test("renders article markdown with images and highlighted code", async () => {
   const html = await marked.parse(`# Heading
 
