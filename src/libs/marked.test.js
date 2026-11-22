@@ -2,7 +2,7 @@ import { expect, test } from "bun:test";
 import { marked } from "./marked";
 
 test.each([
-  ["![photo](image.png)", '<img src="image.png" title="null" alt="photo" />'],
+  ["![photo](image.png)", '<img src="image.png" alt="photo" />'],
   ["![photo|320](image.png \"caption\")", '<img src="image.png" title="caption" alt="photo" width="320"/>'],
   ["![photo|320x200](image.png \"caption\")", '<img src="image.png" title="caption" alt="photo" width="320" height="200"/>'],
 ])("renders image attributes for %s", async (markdown, image) => {

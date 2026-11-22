@@ -64,6 +64,15 @@ describe("getUnpublishedArticleByTitle", () => {
     });
   });
 
+  test("accepts an invalid date in an article preview", async () => {
+    const data = tree([blob("draft.md", markdown("not-a-date"))]);
+    const article = await getUnpublishedArticleByTitle("draft", data);
+
+    expect(article.title).toBe("draft");
+    expect(Number.isNaN(article.publishedAt.getTime())).toBe(true);
+    expect(article.body).toBe("# Content\n");
+  });
+
   test("excludes published, missing, non-blob, empty, and incomplete entries", async () => {
     const data = tree([
       blob("published.md", markdown("2020-01-01")),
