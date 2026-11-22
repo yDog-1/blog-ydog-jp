@@ -10,11 +10,11 @@ export const articleVariables = {
   name: "articles",
 };
 
-export const NewGitHubSdk = () =>
+export const NewGitHubSdk = (sdkClient = client, getToken = githubToken) =>
   getSdk(
-    client,
+    sdkClient,
     <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>) => {
-      const token = githubToken();
+      const token = getToken();
       if (!token) throw new Error("GITHUB_TOKEN is not set");
       return action({
         Authorization: `Bearer ${token}`,
@@ -22,7 +22,8 @@ export const NewGitHubSdk = () =>
     },
   );
 
-export const getArticleData = () => NewGitHubSdk().listArticles(articleVariables);
+export const getArticleData = () =>
+  NewGitHubSdk().listArticles(articleVariables);
 
 export const isTree = (
   object: { __typename?: string } | null | undefined,

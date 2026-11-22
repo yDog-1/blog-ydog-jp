@@ -1,11 +1,5 @@
 import matter from "gray-matter";
-import {
-  articleVariables,
-  getArticleData,
-  isBlob,
-  isTree,
-  NewGitHubSdk,
-} from "@/libs/gitHub";
+import { getArticleData, isBlob, isTree } from "@/libs/gitHub";
 import type {
   Article,
   ArticleFrontmatter,
@@ -44,9 +38,9 @@ export async function getArticles(dataPromise = getArticleData()) {
  */
 export async function getUnpublishedArticleByTitle(
   title: string,
+  dataPromise = getArticleData(),
 ): Promise<Article | undefined> {
-  const sdk = NewGitHubSdk();
-  const data = await sdk.listArticles(articleVariables);
+  const data = await dataPromise;
 
   if (!isTree(data.repository?.object)) {
     return undefined;
