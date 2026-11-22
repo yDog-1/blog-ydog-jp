@@ -1,3 +1,4 @@
+import { githubToken } from "virtual:github-token";
 import { GraphQLClient } from "graphql-request";
 import { getSdk } from "./generated/client";
 
@@ -9,18 +10,14 @@ export const articleVariables = {
   name: "articles",
 };
 
-const authorizationToken = import.meta.env.GITHUB_TOKEN;
-
-if (!authorizationToken) {
-  throw new Error("GITHUB_TOKEN is not set");
-}
-
 export const NewGitHubSdk = () =>
   getSdk(
     client,
     <T>(action: (requestHeaders?: Record<string, string>) => Promise<T>) => {
+      const token = githubToken();
+      if (!token) throw new Error("GITHUB_TOKEN is not set");
       return action({
-        Authorization: `Bearer ${authorizationToken}`,
+        Authorization: `Bearer ${token}`,
       });
     },
   );

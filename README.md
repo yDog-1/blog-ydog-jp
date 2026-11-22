@@ -32,7 +32,9 @@ bun run build
 
 ## Cloudflare Workers
 
-Astro 7 のビルドには記事を取得できる `GITHUB_TOKEN` が必要です。`bun run build` の実行環境に設定してください。
+静的ページの生成には記事を取得できる `GITHUB_TOKEN` が必要です。`bun run build` の環境変数に設定してください。静的ページは Node.js で生成され、トークンは Worker のコードには埋め込まれません。
+
+`/preview` では Worker の実行時シークレット `GITHUB_TOKEN` を使用します。Cloudflare Workers にシークレットとして登録してください。ローカル開発では、ビルド用の環境変数に加え、Wrangler が読み込む `.dev.vars` に `GITHUB_TOKEN` を設定してください。`.dev.vars` はコミットしないでください。
 
 Cloudflare アダプターは Pages ではなく Workers 用の `dist/server/` と `dist/client/` を生成します。既存の Pages プロジェクトの設定は自動では移行されません。Workers のビルド設定、カスタムドメイン、環境変数を移行前に確認してください。`/preview` は実行時にも GitHub にアクセスするため、Workers 側のトークン設定と動作確認が必要です。生成される設定には Cloudflare Images のバインディングが含まれます。
 
