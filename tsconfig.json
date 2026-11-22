@@ -7,9 +7,8 @@
   "compilerOptions": {
     "moduleResolution": "bundler",
     "module": "ESNext",
-    "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react",

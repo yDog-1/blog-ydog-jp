@@ -9,5 +9,4 @@
   }
 }
 
-/* biome-ignore lint/suspicious/noUnknownAtRules: Tailwind v4 uses @source */
 @source "./src/**/*.{astro,html,js,jsx,ts,tsx,md,mdx}";
