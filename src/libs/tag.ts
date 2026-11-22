@@ -1,7 +1,7 @@
 import matter from "gray-matter";
 import type { TagColor } from "@/types/Color";
 import { getTextColor } from "./color";
-import { articleVariables, isBlob, isTree, NewGitHubSdk } from "./gitHub";
+import { getArticleData, isBlob, isTree } from "./gitHub";
 
 // . が使用できないため、- と入力したものを . に変換する
 export const decodeTag = (tagName: string) => {
@@ -18,9 +18,10 @@ export const encodeTag = (tagName: string) => {
   return tagName;
 };
 
-export async function getTagColors(): Promise<TagColor[] | undefined> {
-  const sdk = NewGitHubSdk();
-  const data = await sdk.listArticles(articleVariables);
+export async function getTagColors(
+  dataPromise = getArticleData(),
+): Promise<TagColor[] | undefined> {
+  const data = await dataPromise;
 
   if (!isTree(data.repository?.object)) {
     return;

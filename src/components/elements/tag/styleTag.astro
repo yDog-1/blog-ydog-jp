@@ -1,5 +1,6 @@
 ---
 import { textWhite } from "@/libs/color";
+import { getArticleData } from "@/libs/gitHub";
 import { defaultTagColor, getTagColors } from "@/libs/tag";
 
 interface Props {
@@ -8,7 +9,9 @@ interface Props {
 
 const { tagName } = Astro.props;
 
-const tagColors = await (Astro.locals.tagColors ??= getTagColors());
+const tagColors = await (Astro.locals.tagColors ??= getTagColors(
+  Astro.locals.articleData ??= getArticleData(),
+));
 const tagStyle = tagColors?.find((tag) => tag.name === tagName) ?? {
   bg: defaultTagColor,
   textColor: textWhite,

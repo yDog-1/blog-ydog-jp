@@ -22,6 +22,8 @@ export const NewGitHubSdk = () =>
     },
   );
 
+export const getArticleData = () => NewGitHubSdk().listArticles(articleVariables);
+
 export const isTree = (
   object: { __typename?: string } | null | undefined,
 ): object is { __typename: "Tree" } => {

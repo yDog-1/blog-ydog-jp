@@ -1,14 +1,19 @@
 import matter from "gray-matter";
-import { articleVariables, isBlob, isTree, NewGitHubSdk } from "@/libs/gitHub";
+import {
+  articleVariables,
+  getArticleData,
+  isBlob,
+  isTree,
+  NewGitHubSdk,
+} from "@/libs/gitHub";
 import type {
   Article,
   ArticleFrontmatter,
   ArticleInput,
 } from "@/types/Article";
 
-export async function getArticles() {
-  const sdk = NewGitHubSdk();
-  const data = await sdk.listArticles(articleVariables);
+export async function getArticles(dataPromise = getArticleData()) {
+  const data = await dataPromise;
 
   if (!isTree(data.repository?.object)) {
     return;

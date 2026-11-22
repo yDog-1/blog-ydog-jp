@@ -1,10 +1,11 @@
 ---
 import { getArticles } from "@/libs/article";
+import { getArticleData } from "@/libs/gitHub";
 import { decodeTag, encodeTag } from "@/libs/tag";
 import type { Article } from "@/types/Article";
 import Card from "./card.astro";
 
-const articles = await getArticles();
+const articles = await getArticles(Astro.locals.articleData ??= getArticleData());
 
 if (!articles) {
   throw new Error("articles is not defined");

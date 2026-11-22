@@ -11,20 +11,13 @@ export async function getStaticPaths() {
       if (article?.title === undefined) {
         return null;
       }
-      return { params: { title: article.title } };
+      return { params: { title: article.title }, props: { article } };
     })
     .filter(Boolean);
   return paths;
 }
 
-const { title } = Astro.params;
-const articles = await getArticles();
-
-const article = articles?.find((article) => article?.title === title);
-
-if (article === undefined) {
-  throw new Error("articles is undefined");
-}
+const { article } = Astro.props;
 
 const path = `/article/${article.title}`;
 ---
