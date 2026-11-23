@@ -6,7 +6,3 @@ declare namespace App {
     articleData?: ReturnType<typeof import("./libs/gitHub").getArticleData>;
   }
 }
-
-declare module "virtual:github-token" {
-  export function githubToken(): string | undefined;
-}

@@ -30,15 +30,17 @@ bun run dev
 bun run build
 ```
 
-## Cloudflare Workers
+## ビルドとデプロイ
 
-静的ページの生成には記事を取得できる `GITHUB_TOKEN` が必要です。`bun run build` の環境変数に設定してください。静的ページは Node.js で生成され、トークンは Worker のコードには埋め込まれません。
+記事リポジトリを読み取れるトークンを `GITHUB_TOKEN` に設定してビルドします。GitHub App の Installation Access Token と、必要な読み取り権限を持つ個人アクセストークンのどちらも使用できます。
 
-`/preview` では Worker の実行時シークレット `GITHUB_TOKEN` を使用します。Cloudflare Workers にシークレットとして登録してください。
+```bash
+GITHUB_TOKEN='<トークン>' bun run build
+```
 
-ローカルで `bun run preview` を使う場合は、ビルド前にプロジェクトルートの `.dev.vars` に `GITHUB_TOKEN` を設定してください。ビルド用の環境変数も別途必要です。Cloudflare の Vite プラグインはビルド時に `.dev.vars` を `dist/server/.dev.vars` にコピーし、プレビュー時にそのコピーを読み込みます。ビルド後にルートの `.dev.vars` を追加または変更した場合は、再ビルドしてプレビューを再起動してください。`.dev.vars` と、シークレットを含む `dist/server/.dev.vars` はコミットや公開をしないでください。
+GitHub App のトークンをローカルで使う場合も、App の秘密鍵から発行できます。Installation Access Token は約1時間で期限切れになるため、期限切れ後は再発行してください。トークンや秘密鍵はコミットしないでください。CI では現在、Actions シークレット `ARTICLES_READ_TOKEN` を使用します。
 
-Cloudflare アダプターは Pages ではなく Workers 用の `dist/server/` と `dist/client/` を生成します。既存の Pages プロジェクトの設定は自動では移行されません。Workers のビルド設定、カスタムドメイン、環境変数を移行前に確認してください。`/preview` は実行時にも GitHub にアクセスするため、Workers 側のトークン設定と動作確認が必要です。生成される設定には Cloudflare Images のバインディングが含まれます。
+ビルド結果は静的ファイルとして `dist/` に出力されます。`wrangler.toml` はこのディレクトリを Cloudflare Workers の静的アセットとして配信する設定です。実行時の GitHub 認証情報は不要です。既存の Workers のビルド・デプロイ設定は、新しい出力先に合わせて確認してください。
 
 ## 🗂️ プロジェクト構成
 

@@ -11,7 +11,6 @@
     "fmtlint": "bunx biome check --write ."
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.4.9",
     "@astrojs/sitemap": "^3.7.6",
     "@fontsource/zen-kaku-gothic-new": "^5.3.1",
     "@graphql-codegen/typescript": "^7.0.1",

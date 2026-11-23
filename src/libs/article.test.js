@@ -1,7 +1,6 @@
-import { describe, expect, mock, test } from "bun:test";
+import { describe, expect, test } from "bun:test";
 
-mock.module("virtual:github-token", () => ({ githubToken: () => "" }));
-const { getArticles, getUnpublishedArticleByTitle } = await import("./article");
+const { getArticles } = await import("./article");
 
 const blob = (name, text) => ({ name, object: { __typename: "Blob", text: text.replace("TITLE_PLACEHOLDER", name.replace(/\.md$/, "")) } });
 const tree = (entries) =>
@@ -47,8 +46,6 @@ describe("getArticles", () => {
     const articles = await getArticles(data);
     expect(articles.map(({ title }) => title)).toEqual(["日本語の題名"]);
     expect(articles[0].tags).toEqual(["Go"]);
-    expect((await getUnpublishedArticleByTitle("unpublished-draft", data)).title).toBe("下書き");
-    expect((await getUnpublishedArticleByTitle("下書き", data)).body).toBe("下書き本文");
   });
 
   test("returns no articles for an empty tree and undefined for a non-tree", async () => {
@@ -61,56 +58,5 @@ describe("getArticles", () => {
   test("propagates a data source failure", async () => {
     const error = new Error("source unavailable");
     await expect(getArticles(Promise.reject(error))).rejects.toBe(error);
-  });
-});
-
-describe("getUnpublishedArticleByTitle", () => {
-  test("returns the matching future article with parsed content", async () => {
-    const data = tree([blob("draft.md", markdown("2999-01-01", "[Draft]"))]);
-    expect(await getUnpublishedArticleByTitle("draft", data)).toEqual({
-      title: "draft",
-      publishedAt: new Date("2999-01-01"),
-      tags: ["Draft"],
-      description: "An article",
-      body: "# Content\n",
-    });
-  });
-
-  test("rejects an invalid date in an article preview", async () => {
-    const data = tree([blob("draft.md", markdown("not-a-date"))]);
-    const article = await getUnpublishedArticleByTitle("draft", data);
-
-    expect(article).toBeUndefined();
-  });
-
-  test("excludes published, missing, non-blob, empty, and incomplete entries", async () => {
-    const data = tree([
-      blob("published.md", markdown("2020-01-01")),
-      { name: "folder.md", object: { __typename: "Tree" } },
-      blob("empty.md", ""),
-      blob("incomplete.md", "---\ntags: []\n---\n"),
-    ]);
-    for (const title of [
-      "published",
-      "missing",
-      "folder",
-      "empty",
-      "incomplete",
-    ]) {
-      expect(await getUnpublishedArticleByTitle(title, data)).toBeUndefined();
-    }
-    expect(
-      await getUnpublishedArticleByTitle(
-        "draft",
-        Promise.resolve({ repository: null }),
-      ),
-    ).toBeUndefined();
-  });
-
-  test("propagates a data source failure", async () => {
-    const error = new Error("preview unavailable");
-    await expect(
-      getUnpublishedArticleByTitle("draft", Promise.reject(error)),
-    ).rejects.toBe(error);
   });
 });

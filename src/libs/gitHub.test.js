@@ -1,6 +1,5 @@
 import { describe, expect, mock, test } from "bun:test";
 
-mock.module("virtual:github-token", () => ({ githubToken: () => "" }));
 const { articleVariables, isBlob, isTree, NewGitHubSdk } = await import(
   "./gitHub"
 );
