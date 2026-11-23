@@ -32,17 +32,10 @@ jobs:
         with:
           bun-version: 1.4.4
       - run: bun install --frozen-lockfile
-      - uses: actions/create-github-app-token@v3.4.0
-        id: articles-token
-        with:
-          client-id: ${{ vars.ARTICLES_CLIENT_ID }}
-          private-key: ${{ secrets.ARTICLES_APP_PRIVATE_KEY }}
-          owner: yDog-1
-          repositories: articles
-          permission-contents: read
       - run: bun run build
         env:
-          ARTICLES_READ_TOKEN: ${{ steps.articles-token.outputs.token }}
+          ARTICLES_CLIENT_ID: ${{ vars.ARTICLES_CLIENT_ID }}
+          ARTICLES_APP_PRIVATE_KEY: ${{ secrets.ARTICLES_APP_PRIVATE_KEY }}
 
   verify-actions-lock:
     runs-on: ubuntu-latest
