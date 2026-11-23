@@ -3,11 +3,11 @@ import { describe, expect, mock, test } from "bun:test";
 mock.module("virtual:github-token", () => ({ githubToken: () => "" }));
 const { getArticles, getUnpublishedArticleByTitle } = await import("./article");
 
-const blob = (name, text) => ({ name, object: { __typename: "Blob", text } });
+const blob = (name, text) => ({ name, object: { __typename: "Blob", text: text.replace("TITLE_PLACEHOLDER", name.replace(/\.md$/, "")) } });
 const tree = (entries) =>
   Promise.resolve({ repository: { object: { __typename: "Tree", entries } } });
 const markdown = (date, tags = "[Bun, TypeScript]") =>
-  `---\npublished_at: ${date}\ntags: ${tags}\ndescription: An article\n---\n# Content\n`;
+  `---\ntitle: TITLE_PLACEHOLDER\npublished: true\npublished_at: ${date}\ntopics: ${tags}\ndescription: An article\n---\n# Content\n`;
 
 describe("getArticles", () => {
   test("parses published articles and orders them newest first", async () => {
@@ -39,6 +39,18 @@ describe("getArticles", () => {
     ]);
   });
 
+  test("uses Zenn titles and topics, and excludes drafts even with a past date", async () => {
+    const data = tree([
+      blob("english-slug.md", "---\ntitle: 日本語の題名\nemoji: 🐱\ntype: tech\ntopics: [Go]\npublished: true\npublished_at: 2020-01-01\n---\n本文"),
+      blob("unpublished-draft.md", "---\ntitle: 下書き\ntopics: []\npublished: false\npublished_at: 2020-01-01\n---\n下書き本文"),
+    ]);
+    const articles = await getArticles(data);
+    expect(articles.map(({ title }) => title)).toEqual(["日本語の題名"]);
+    expect(articles[0].tags).toEqual(["Go"]);
+    expect((await getUnpublishedArticleByTitle("unpublished-draft", data)).title).toBe("下書き");
+    expect((await getUnpublishedArticleByTitle("下書き", data)).body).toBe("下書き本文");
+  });
+
   test("returns no articles for an empty tree and undefined for a non-tree", async () => {
     expect(await getArticles(tree([]))).toEqual([]);
     expect(
@@ -64,13 +76,11 @@ describe("getUnpublishedArticleByTitle", () => {
     });
   });
 
-  test("accepts an invalid date in an article preview", async () => {
+  test("rejects an invalid date in an article preview", async () => {
     const data = tree([blob("draft.md", markdown("not-a-date"))]);
     const article = await getUnpublishedArticleByTitle("draft", data);
 
-    expect(article.title).toBe("draft");
-    expect(Number.isNaN(article.publishedAt.getTime())).toBe(true);
-    expect(article.body).toBe("# Content\n");
+    expect(article).toBeUndefined();
   });
 
   test("excludes published, missing, non-blob, empty, and incomplete entries", async () => {

@@ -23,8 +23,8 @@ afterAll(() => {
 });
 
 const article = (date, description = "description") =>
-  `---\npublished_at: ${date}\ntags: [TypeScript]\ndescription: ${description}\n---\nBody`;
-const blob = (name, text) => ({ name, object: { __typename: "Blob", text } });
+  `---\ntitle: TITLE_PLACEHOLDER\npublished: true\npublished_at: ${date}\ntopics: [TypeScript]\ndescription: ${description}\n---\nBody`;
+const blob = (name, text) => ({ name, object: { __typename: "Blob", text: text.replace("TITLE_PLACEHOLDER", name.replace(/\.md$/, "")) } });
 
 function serve(entries) {
   const requests = [];
@@ -50,7 +50,7 @@ test("article and tag consumers share the GitHub response and preserve their out
     blob("empty.md", ""),
     { name: "directory", object: { __typename: "Tree" } },
     blob(
-      "tagColor.md",
+      "tagColor.yaml",
       "---\nTypeScript:\n  bg: '#ffffff'\nplain:\n  bg: default\ncustom:\n  bg: '#000000'\n  text: '#abcdef'\n---\n",
     ),
   ]);

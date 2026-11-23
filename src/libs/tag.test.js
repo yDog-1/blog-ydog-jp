@@ -19,7 +19,7 @@ describe("tag URLs", () => {
 describe("getTagColors", () => {
   test("maps named colors, default backgrounds, and explicit text colors", async () => {
     const colors = blob(
-      "tagColor.md",
+      "tagColor.yaml",
       "---\nlight:\n  bg: '#ffffff'\ndark:\n  bg: '#000000'\nplain:\n  bg: default\ncustom:\n  bg: '#ffffff'\n  text: '#abcdef'\n---\n",
     );
     expect(
@@ -36,10 +36,10 @@ describe("getTagColors", () => {
     expect(await getTagColors(tree([]))).toEqual([]);
     expect(
       await getTagColors(
-        tree([{ name: "tagColor.md", object: { __typename: "Tree" } }]),
+        tree([{ name: "tagColor.yaml", object: { __typename: "Tree" } }]),
       ),
     ).toEqual([]);
-    expect(await getTagColors(tree([blob("tagColor.md", "")]))).toEqual([]);
+    expect(await getTagColors(tree([blob("tagColor.yaml", "")]))).toEqual([]);
   });
 
   test("returns undefined for a non-tree and propagates source failures", async () => {

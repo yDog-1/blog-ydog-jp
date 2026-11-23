@@ -28,7 +28,7 @@ export async function getTagColors(
   }
 
   const tagColorFile = data.repository.object.entries?.find((c) => {
-    return isBlob(c.object) && c.object.text && c.name === "tagColor.md";
+    return isBlob(c.object) && c.object.text && c.name === "tagColor.yaml";
   });
 
   if (

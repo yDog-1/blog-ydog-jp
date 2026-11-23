@@ -39879,7 +39879,7 @@ export type ListArticlesQuery = { repository: { object:
 export const ListArticlesDocument = gql`
     query listArticles($owner: String!, $name: String!) {
   repository(owner: $owner, name: $name) {
-    object(expression: "HEAD:blog") {
+    object(expression: "HEAD:articles") {
       __typename
       ... on Tree {
         entries {

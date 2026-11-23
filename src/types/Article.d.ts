@@ -9,12 +9,12 @@ export type Article = {
 type ArticleInput = {
   name: string;
   text: string;
-  isPreview?: boolean;
 };
 
 type ArticleFrontmatter = {
   title: string;
-  published_at: string;
-  tags: string[];
-  description: string;
+  published_at?: string | Date;
+  topics: string[];
+  published: boolean;
+  description?: string;
 };
