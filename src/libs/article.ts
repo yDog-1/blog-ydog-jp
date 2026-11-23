@@ -3,6 +3,7 @@ import { getArticleData, isBlob, isTree } from "@/libs/gitHub";
 import type { Article, ArticleFrontmatter, ArticleInput } from "@/types/Article";
 
 export async function getArticles(dataPromise = getArticleData()) {
+  const previewFiles = new Set((process.env.ARTICLES_PREVIEW_FILES ?? "").split("\n"));
   const data = await dataPromise;
   if (!isTree(data.repository?.object)) return;
 
@@ -10,7 +11,7 @@ export async function getArticles(dataPromise = getArticleData()) {
     ?.flatMap((entry) => {
       if (!entry.name.endsWith(".md") || !isBlob(entry.object) || !entry.object.text) return [];
       const article = parseToArticle({ name: entry.name, text: entry.object.text });
-      return article && article.published ? [article.article] : [];
+      return article && (article.published || previewFiles.has(entry.name)) ? [article.article] : [];
     })
     .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
 }

@@ -3,6 +3,10 @@
 # Docs: https://gh.io/actions-lockfile
 version: 'v0.0.3'
 workflows:
+    '.github/workflows/article-preview.yml':
+        - 'actions/checkout@v7.0.1'
+        - 'actions/create-github-app-token@v3.4.0'
+        - 'oven-sh/setup-bun@v2.2.0'
     '.github/workflows/ci.yml':
         - 'actions/checkout@v7.0.1'
         - 'actions/create-github-app-token@v3.4.0'

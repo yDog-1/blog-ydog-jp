@@ -26,11 +26,11 @@ describe("NewGitHubSdk", () => {
       })),
     ).toEqual([
       {
-        variables: { owner: "yDog-1", name: "articles" },
+        variables: { owner: "yDog-1", name: "articles", expression: "HEAD:articles" },
         requestHeaders: { Authorization: "Bearer first" },
       },
       {
-        variables: { owner: "yDog-1", name: "articles" },
+        variables: { owner: "yDog-1", name: "articles", expression: "HEAD:articles" },
         requestHeaders: { Authorization: "Bearer second" },
       },
     ]);

@@ -39860,6 +39860,7 @@ export type WorkflowsParametersInput = {
 export type ListArticlesQueryVariables = Exact<{
   owner: string;
   name: string;
+  expression: string;
 }>;
 
 
@@ -39877,9 +39878,9 @@ export type ListArticlesQuery = { repository: { object:
 
 
 export const ListArticlesDocument = gql`
-    query listArticles($owner: String!, $name: String!) {
+    query listArticles($owner: String!, $name: String!, $expression: String!) {
   repository(owner: $owner, name: $name) {
-    object(expression: "HEAD:articles") {
+    object(expression: $expression) {
       __typename
       ... on Tree {
         entries {

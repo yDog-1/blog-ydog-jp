@@ -7,6 +7,7 @@ const client = new GraphQLClient(endpoint);
 export const articleVariables = {
   owner: "yDog-1",
   name: "articles",
+  expression: `${process.env.ARTICLES_REF || "HEAD"}:articles`,
 };
 
 export const NewGitHubSdk = (sdkClient = client, getToken = () => process.env.ARTICLES_READ_TOKEN) =>

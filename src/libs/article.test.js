@@ -48,6 +48,19 @@ describe("getArticles", () => {
     expect(articles[0].tags).toEqual(["Go"]);
   });
 
+  test("includes only selected drafts in a preview", async () => {
+    const old = process.env.ARTICLES_PREVIEW_FILES;
+    process.env.ARTICLES_PREVIEW_FILES = "selected.md";
+    try {
+      const draft = markdown("2020-01-01").replace("published: true", "published: false");
+      const articles = await getArticles(tree([blob("selected.md", draft), blob("other.md", draft)]));
+      expect(articles.map(({ title }) => title)).toEqual(["selected"]);
+    } finally {
+      if (old === undefined) delete process.env.ARTICLES_PREVIEW_FILES;
+      else process.env.ARTICLES_PREVIEW_FILES = old;
+    }
+  });
+
   test("returns no articles for an empty tree and undefined for a non-tree", async () => {
     expect(await getArticles(tree([]))).toEqual([]);
     expect(

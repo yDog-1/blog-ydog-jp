@@ -44,6 +44,21 @@ CI では GitHub App の Installation Access Token を発行します。App を 
 
 ビルド結果は静的ファイルとして `dist/` に出力されます。`wrangler.toml` はこのディレクトリを Cloudflare Workers の静的アセットとして配信する設定です。実行時の GitHub 認証情報は不要です。既存の Workers のビルド・デプロイ設定は、新しい出力先に合わせて確認してください。
 
+## 記事 PR のプレビュー
+
+`articles` の PR はブログに通知され、PR のコミットを使った Cloudflare Workers Preview が作られます。公開済み記事に加え、その PR で変更された未公開記事を表示します。PR を閉じるとプレビューを削除します。
+
+**プレビュー URL はアクセス制限を設定しない限り公開されます。** `articles` は非公開リポジトリのため、未公開記事を保護する Cloudflare Access の設定と動作確認を行ってから機能を有効にしてください。プレビューに含まれる記事は URL を知る人が閲覧できます。
+
+設定:
+
+1. ブログの Actions secrets に `CLOUDFLARE_API_TOKEN` と `CLOUDFLARE_ACCOUNT_ID` を登録します。トークンには Workers の編集権限が必要です。
+2. 既存の articles 読み取り用 GitHub App に Pull requests の読み書き権限を追加し、インストール側で承認します。ブログの workflow はこの App を使って PR の確認とコメントを行います。
+3. `articles` 側に、ブログリポジトリの Contents 書き込み権限を持つ GitHub App をインストールし、Actions variable `BLOG_CLIENT_ID` と secret `BLOG_APP_PRIVATE_KEY` を設定します。
+4. 先にブログ側の workflow をデフォルトブランチに取り込み、次に articles 側の workflow を有効にします。同一リポジトリ内の PR のみが対象です。
+
+`ARTICLES_REF` は記事取得先の Git ref を、`ARTICLES_PREVIEW_FILES` はプレビューに含める未公開記事のファイル名を改行区切りで指定します。通常のビルドでは両方とも不要です。
+
 ## 🗂️ プロジェクト構成
 
 - `src/pages/` - ページコンポーネント

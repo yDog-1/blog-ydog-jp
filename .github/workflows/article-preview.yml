@@ -1,0 +1,90 @@
+name: Article preview
+
+on:
+  repository_dispatch:
+    types: [article-preview]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: article-preview-${{ github.event.client_payload.number }}
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@v2.2.0
+        with:
+          bun-version: 1.4.4
+      - uses: actions/create-github-app-token@v3.4.0
+        id: articles-token
+        with:
+          client-id: ${{ vars.ARTICLES_CLIENT_ID }}
+          private-key: ${{ secrets.ARTICLES_APP_PRIVATE_KEY }}
+          owner: yDog-1
+          repositories: articles
+          permission-contents: read
+          permission-pull-requests: write
+      - name: Verify PR and select action
+        id: pr
+        env:
+          GH_TOKEN: ${{ steps.articles-token.outputs.token }}
+          NUMBER: ${{ github.event.client_payload.number }}
+          SHA: ${{ github.event.client_payload.sha }}
+        run: |
+          [[ "$NUMBER" =~ ^[1-9][0-9]*$ && "$SHA" =~ ^[0-9a-f]{40}$ ]]
+          pr=$(gh api "repos/yDog-1/articles/pulls/$NUMBER")
+          state=$(jq -r '.state' <<< "$pr")
+          head=$(jq -r '.head.sha' <<< "$pr")
+          if [[ "$state" == closed ]]; then
+            echo 'action=delete' >> "$GITHUB_OUTPUT"
+          elif [[ "$head" == "$SHA" ]]; then
+            echo 'action=build' >> "$GITHUB_OUTPUT"
+          else
+            echo 'action=skip' >> "$GITHUB_OUTPUT"
+          fi
+      - run: bun install --frozen-lockfile
+        if: steps.pr.outputs.action == 'build'
+      - name: Build article preview
+        if: steps.pr.outputs.action == 'build'
+        run: |
+          export ARTICLES_PREVIEW_FILES
+          ARTICLES_PREVIEW_FILES=$(gh api --paginate "repos/yDog-1/articles/pulls/$NUMBER/files" --jq '.[] | select(.status != "removed") | .filename | select(startswith("articles/")) | ltrimstr("articles/") | select(contains("/") | not)')
+          bun run build
+        env:
+          GH_TOKEN: ${{ steps.articles-token.outputs.token }}
+          NUMBER: ${{ github.event.client_payload.number }}
+          ARTICLES_READ_TOKEN: ${{ steps.articles-token.outputs.token }}
+          ARTICLES_REF: ${{ github.event.client_payload.sha }}
+      - name: Publish preview
+        if: steps.pr.outputs.action == 'build'
+        id: publish
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          NUMBER: ${{ github.event.client_payload.number }}
+        run: |
+          set -o pipefail
+          output=$(bunx wrangler@4.135.0 preview --name "article-pr-$NUMBER" --json)
+          echo "url=$(jq -er '.preview.urls[0]' <<< "$output")" >> "$GITHUB_OUTPUT"
+      - name: Comment on PR
+        if: steps.pr.outputs.action == 'build'
+        env:
+          GH_TOKEN: ${{ steps.articles-token.outputs.token }}
+          NUMBER: ${{ github.event.client_payload.number }}
+          URL: ${{ steps.publish.outputs.url }}
+          SHA: ${{ github.event.client_payload.sha }}
+        run: |
+          gh pr comment "$NUMBER" --repo yDog-1/articles --body "Preview for $SHA: $URL"
+      - name: Delete preview
+        if: steps.pr.outputs.action == 'delete'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          NUMBER: ${{ github.event.client_payload.number }}
+        run: bunx wrangler@4.135.0 preview delete --name "article-pr-$NUMBER" --skip-confirmation

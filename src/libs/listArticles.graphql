@@ -1,6 +1,6 @@
-query listArticles($owner: String!, $name: String!) {
+query listArticles($owner: String!, $name: String!, $expression: String!) {
   repository(owner: $owner, name: $name) {
-    object(expression: "HEAD:articles") {
+    object(expression: $expression) {
       __typename
       ... on Tree {
         entries {
