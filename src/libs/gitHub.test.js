@@ -40,7 +40,7 @@ describe("NewGitHubSdk", () => {
     const request = mock(() => Promise.resolve({}));
     const sdk = NewGitHubSdk({ request }, () => "");
     expect(() => sdk.listArticles(articleVariables)).toThrow(
-      "GITHUB_TOKEN is not set",
+      "ARTICLES_READ_TOKEN is not set",
     );
     expect(request).not.toHaveBeenCalled();
   });

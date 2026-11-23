@@ -32,13 +32,15 @@ bun run build
 
 ## ビルドとデプロイ
 
-記事リポジトリを読み取れるトークンを `GITHUB_TOKEN` に設定してビルドします。GitHub App の Installation Access Token と、必要な読み取り権限を持つ個人アクセストークンのどちらも使用できます。
+記事リポジトリを読み取れるトークンを `ARTICLES_READ_TOKEN` に設定してビルドします。GitHub App の Installation Access Token と、必要な読み取り権限を持つ個人アクセストークンのどちらも使用できます。
 
 ```bash
-GITHUB_TOKEN='<トークン>' bun run build
+ARTICLES_READ_TOKEN='<トークン>' bun run build
 ```
 
-GitHub App のトークンをローカルで使う場合も、App の秘密鍵から発行できます。Installation Access Token は約1時間で期限切れになるため、期限切れ後は再発行してください。トークンや秘密鍵はコミットしないでください。CI では現在、Actions シークレット `ARTICLES_READ_TOKEN` を使用します。
+GitHub App のトークンをローカルで使う場合も、App の秘密鍵から発行できます。Installation Access Token は約1時間で期限切れになるため、期限切れ後は再発行してください。トークンや秘密鍵はコミットしないでください。
+
+CI では GitHub App の Installation Access Token を発行します。App を `yDog-1/articles` にインストールし、リポジトリの Contents 読み取り権限を付与してください。ブログのリポジトリには Actions 変数 `ARTICLES_CLIENT_ID` と Actions シークレット `ARTICLES_APP_PRIVATE_KEY`（PEM 全文）を設定します。
 
 ビルド結果は静的ファイルとして `dist/` に出力されます。`wrangler.toml` はこのディレクトリを Cloudflare Workers の静的アセットとして配信する設定です。実行時の GitHub 認証情報は不要です。既存の Workers のビルド・デプロイ設定は、新しい出力先に合わせて確認してください。
 

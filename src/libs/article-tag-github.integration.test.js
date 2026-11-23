@@ -1,8 +1,8 @@
 import { afterAll, afterEach, expect, mock, test } from "bun:test";
 import { GraphQLClient } from "graphql-request";
 
-const originalToken = process.env.GITHUB_TOKEN;
-process.env.GITHUB_TOKEN = "test-token";
+const originalToken = process.env.ARTICLES_READ_TOKEN;
+process.env.ARTICLES_READ_TOKEN = "test-token";
 
 const { getArticles } = await import("./article");
 const { decodeTag, encodeTag, getTagColors } = await import("./tag");
@@ -16,12 +16,12 @@ globalThis.fetch = denyNetwork;
 
 afterEach(() => {
   globalThis.fetch = denyNetwork;
-  process.env.GITHUB_TOKEN = "test-token";
+  process.env.ARTICLES_READ_TOKEN = "test-token";
 });
 afterAll(() => {
   globalThis.fetch = originalFetch;
-  if (originalToken === undefined) delete process.env.GITHUB_TOKEN;
-  else process.env.GITHUB_TOKEN = originalToken;
+  if (originalToken === undefined) delete process.env.ARTICLES_READ_TOKEN;
+  else process.env.ARTICLES_READ_TOKEN = originalToken;
 });
 
 const article = (date, description = "description") =>
@@ -85,8 +85,8 @@ test("article and tag consumers share the GitHub response and preserve their out
 
 test("missing token throws without making a request", () => {
   const requests = serve([]);
-  process.env.GITHUB_TOKEN = "";
-  expect(() => getArticleData()).toThrow("GITHUB_TOKEN is not set");
+  process.env.ARTICLES_READ_TOKEN = "";
+  expect(() => getArticleData()).toThrow("ARTICLES_READ_TOKEN is not set");
   expect(requests).toHaveLength(0);
 });
 
