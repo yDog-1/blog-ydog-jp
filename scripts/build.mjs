@@ -6,8 +6,12 @@ async function articleToken() {
   if (process.env.ARTICLES_READ_TOKEN) return process.env.ARTICLES_READ_TOKEN;
 
   const { ARTICLES_CLIENT_ID, ARTICLES_APP_PRIVATE_KEY } = process.env;
-  if (!ARTICLES_CLIENT_ID || !ARTICLES_APP_PRIVATE_KEY) {
-    throw new Error("Set ARTICLES_READ_TOKEN or both ARTICLES_CLIENT_ID and ARTICLES_APP_PRIVATE_KEY");
+  const missing = [
+    !ARTICLES_CLIENT_ID && "ARTICLES_CLIENT_ID",
+    !ARTICLES_APP_PRIVATE_KEY && "ARTICLES_APP_PRIVATE_KEY",
+  ].filter(Boolean);
+  if (missing.length) {
+    throw new Error(`ARTICLES_READ_TOKEN is not set; missing GitHub App credentials: ${missing.join(", ")}`);
   }
 
   const auth = createAppAuth({ appId: ARTICLES_CLIENT_ID, privateKey: ARTICLES_APP_PRIVATE_KEY });
