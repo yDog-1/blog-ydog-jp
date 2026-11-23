@@ -15,22 +15,6 @@ export async function getArticles(dataPromise = getArticleData()) {
     .sort((a, b) => b.publishedAt.getTime() - a.publishedAt.getTime());
 }
 
-export async function getUnpublishedArticleByTitle(
-  title: string,
-  dataPromise = getArticleData(),
-): Promise<Article | undefined> {
-  const data = await dataPromise;
-  if (!isTree(data.repository?.object)) return;
-
-  for (const entry of data.repository.object.entries ?? []) {
-    if (!entry.name.endsWith(".md") || !isBlob(entry.object) || !entry.object.text) continue;
-    const parsed = parseToArticle({ name: entry.name, text: entry.object.text });
-    if (parsed && !parsed.published && (entry.name === `${title}.md` || parsed.article.title === title)) {
-      return parsed.article;
-    }
-  }
-}
-
 function parseToArticle(input: ArticleInput): { article: Article; published: boolean } | undefined {
   const { content, data } = matter(input.text);
   if (!isValidArticleData(data)) return;

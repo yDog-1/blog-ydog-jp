@@ -1,10 +1,10 @@
 import { afterAll, afterEach, expect, mock, test } from "bun:test";
 import { GraphQLClient } from "graphql-request";
 
-let token = "test-token";
-mock.module("virtual:github-token", () => ({ githubToken: () => token }));
+const originalToken = process.env.ARTICLES_READ_TOKEN;
+process.env.ARTICLES_READ_TOKEN = "test-token";
 
-const { getArticles, getUnpublishedArticleByTitle } = await import("./article");
+const { getArticles } = await import("./article");
 const { decodeTag, encodeTag, getTagColors } = await import("./tag");
 const { articleVariables, getArticleData, isBlob, isTree, NewGitHubSdk } =
   await import("./gitHub");
@@ -16,10 +16,12 @@ globalThis.fetch = denyNetwork;
 
 afterEach(() => {
   globalThis.fetch = denyNetwork;
-  token = "test-token";
+  process.env.ARTICLES_READ_TOKEN = "test-token";
 });
 afterAll(() => {
   globalThis.fetch = originalFetch;
+  if (originalToken === undefined) delete process.env.ARTICLES_READ_TOKEN;
+  else process.env.ARTICLES_READ_TOKEN = originalToken;
 });
 
 const article = (date, description = "description") =>
@@ -81,36 +83,10 @@ test("article and tag consumers share the GitHub response and preserve their out
   });
 });
 
-test("preview returns only an unpublished matching article", async () => {
-  serve([
-    blob("future.md", article("2999-01-01")),
-    blob("old.md", article("2020-01-01")),
-  ]);
-  expect((await getUnpublishedArticleByTitle("future"))?.title).toBe("future");
-  expect(await getUnpublishedArticleByTitle("old")).toBeUndefined();
-  expect(await getUnpublishedArticleByTitle("missing")).toBeUndefined();
-});
-
 test("missing token throws without making a request", () => {
   const requests = serve([]);
-  token = "";
-  expect(() => getArticleData()).toThrow("GITHUB_TOKEN is not set");
-  expect(requests).toHaveLength(0);
-});
-
-test("preview accepts injected article data without calling GitHub", async () => {
-  const requests = serve([]);
-  const data = Promise.resolve({
-    repository: {
-      object: {
-        __typename: "Tree",
-        entries: [blob("draft.md", article("2999-01-01"))],
-      },
-    },
-  });
-  expect((await getUnpublishedArticleByTitle("draft", data))?.title).toBe(
-    "draft",
-  );
+  process.env.ARTICLES_READ_TOKEN = "";
+  expect(() => getArticleData()).toThrow("ARTICLES_READ_TOKEN is not set");
   expect(requests).toHaveLength(0);
 });
 
