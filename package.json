@@ -4,7 +4,7 @@
   "version": "1.0",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "bun scripts/build.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "codegen": "graphql-codegen --config codegen.ts",
@@ -27,6 +27,8 @@
     "@biomejs/biome": "2.6.8",
     "@graphql-codegen/cli": "^8.0.0",
     "@graphql-codegen/client-preset": "^7.0.0",
+    "@octokit/auth-app": "^8.3.1",
+    "@octokit/request": "^10.0.16",
     "@tailwindcss/vite": "^4.3.5",
     "shiki": "^4.6.0",
     "tailwindcss": "^4.3.5",

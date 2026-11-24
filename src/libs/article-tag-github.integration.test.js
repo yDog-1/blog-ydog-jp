@@ -80,6 +80,7 @@ test("article and tag consumers share the GitHub response and preserve their out
   expect(requests[0].body.variables).toEqual({
     owner: "yDog-1",
     name: "articles",
+    expression: "HEAD:articles",
   });
 });
 
