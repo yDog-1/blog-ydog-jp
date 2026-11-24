@@ -1,5 +1,7 @@
 name = "blog-ydog-jp"
 compatibility_date = "2024-12-21"
 
+[previews]
+
 [assets]
 directory = "./dist"
