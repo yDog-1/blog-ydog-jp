@@ -42,7 +42,13 @@ ARTICLES_READ_TOKEN='<トークン>' bun run build
 
 GitHub Actions では、ブログのリポジトリに Actions 変数 `ARTICLES_CLIENT_ID` と Actions シークレット `ARTICLES_APP_PRIVATE_KEY` を設定します。
 
-Cloudflare Workers Builds では、対象 Worker の **Settings → Build → Build variables and secrets** に同じ名前の変数を設定し、秘密鍵を secret として保存します。Build command を `bun run build` に設定してください。Worker の実行時設定とは別です。ビルドシークレットを読める信頼できない PR のコードを実行しないよう、プレビュービルドの対象を制限してください。
+Cloudflare Workers Builds では、対象 Worker の **Settings → Build → Build variables and secrets** に `ARTICLES_CLIENT_ID` を設定します。PEM の改行が保持されない場合は、次のコマンドで Base64 に変換し、出力を secret `ARTICLES_APP_PRIVATE_KEY_BASE64` に登録してください。出力は秘密鍵と同じように扱ってください。
+
+```bash
+base64 < /path/to/private-key.pem | tr -d '\n'
+```
+
+改行を保持できる場合は、代わりに PEM 全文を secret `ARTICLES_APP_PRIVATE_KEY` に登録できます。両方を設定した場合は Base64 版が優先されます。Build command を `bun run build` に設定してください。Worker の実行時設定とは別です。ビルドシークレットを読める信頼できない PR のコードを実行しないよう、プレビュービルドの対象を制限してください。
 
 ビルド結果は静的ファイルとして `dist/` に出力されます。`wrangler.toml` はこのディレクトリを Cloudflare Workers の静的アセットとして配信する設定です。実行時の GitHub 認証情報は不要です。既存の Workers のビルド・デプロイ設定は、新しい出力先に合わせて確認してください。
 
